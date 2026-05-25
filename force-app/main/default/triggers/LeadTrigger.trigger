@@ -7,11 +7,5 @@ trigger LeadTrigger on Lead (
     after delete,
     after undelete
 ) {
-    LeadTriggerHandler.handle(
-        Trigger.new,
-        Trigger.old,
-        Trigger.newMap,
-        Trigger.oldMap,
-        Trigger.operationType
-    );
+    new LeadTriggerHandler().run();
 }
