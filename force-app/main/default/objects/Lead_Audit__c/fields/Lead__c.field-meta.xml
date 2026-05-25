@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Lead__c</fullName>
-    <description>Parent Lead record this audit entry belongs to. Never null — every audit record must reference a Lead. The relationship is non-cascading delete so audit history is preserved even if the Lead is deleted.</description>
+    <deleteConstraint>Cascade</deleteConstraint>
+    <description>Parent Lead record this audit entry belongs to. Every audit record must reference a Lead.</description>
     <externalId>false</externalId>
     <inlineHelpText>The Lead this audit entry was created for.</inlineHelpText>
     <label>Lead</label>

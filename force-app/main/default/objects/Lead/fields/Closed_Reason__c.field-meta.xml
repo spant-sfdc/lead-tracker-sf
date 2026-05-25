@@ -6,7 +6,7 @@
     <inlineHelpText>Why this lead was closed without converting. Required when moving to a Closed stage.</inlineHelpText>
     <label>Closed Reason</label>
     <required>false</required>
-    <trackHistory>true</trackHistory>
+    <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
