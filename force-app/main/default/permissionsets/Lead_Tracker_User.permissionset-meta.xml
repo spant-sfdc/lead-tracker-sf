@@ -3,7 +3,6 @@
     <description>Grants access to the Lead Tracker application — pipeline board, audit trail, Lead object CRUD with all custom fields, and read access to the Lead_Audit__c object. Assign to any user who needs to manage leads in the Lead Tracker pipeline board.</description>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Lead Tracker User</label>
-    <userLicense>Salesforce</userLicense>
     <applicationVisibilities>
         <application>LeadTracker</application>
         <visible>true</visible>

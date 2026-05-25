@@ -3,4 +3,5 @@
     <description>Lead Tracker Pipeline Board - Kanban-style view of all active leads organized by pipeline stage</description>
     <label>Lead Tracker</label>
     <lwcComponent>ltPipelineBoard</lwcComponent>
+    <motif>utility:layers</motif>
 </CustomTab>
