@@ -6,8 +6,5 @@
         <target>lightning__Tab</target>
         <target>lightning__AppPage</target>
     </targets>
-    <targetConfigs>
-        <targetConfig targets="lightning__Tab,lightning__AppPage">
-        </targetConfig>
-    </targetConfigs>
+
 </LightningComponentBundle>
