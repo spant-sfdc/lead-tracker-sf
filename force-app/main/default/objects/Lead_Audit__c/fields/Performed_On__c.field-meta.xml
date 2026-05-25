@@ -3,7 +3,7 @@
     <fullName>Performed_On__c</fullName>
     <description>The exact date and time this event occurred in the user's local timezone context. Set via System.now() in the service layer. Used to build the chronological audit timeline and to calculate SLA elapsed time between stage transitions.</description>
     <externalId>false</externalId>
-    <helpText>When this event occurred. Used to build the audit timeline and measure time between stages.</helpText>
+    <inlineHelpText>When this event occurred. Used to build the audit timeline and measure time between stages.</inlineHelpText>
     <label>Performed On</label>
     <required>true</required>
     <trackHistory>false</trackHistory>

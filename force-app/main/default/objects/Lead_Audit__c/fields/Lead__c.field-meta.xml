@@ -3,7 +3,7 @@
     <fullName>Lead__c</fullName>
     <description>Parent Lead record this audit entry belongs to. Never null — every audit record must reference a Lead. The relationship is non-cascading delete so audit history is preserved even if the Lead is deleted.</description>
     <externalId>false</externalId>
-    <helpText>The Lead this audit entry was created for.</helpText>
+    <inlineHelpText>The Lead this audit entry was created for.</inlineHelpText>
     <label>Lead</label>
     <referenceTo>Lead</referenceTo>
     <relationshipLabel>Lead Audits</relationshipLabel>

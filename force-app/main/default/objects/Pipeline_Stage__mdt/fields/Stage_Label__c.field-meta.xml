@@ -4,7 +4,6 @@
     <description>Human-readable display name for this stage shown as the column header on the pipeline board and in reports.</description>
     <externalId>false</externalId>
     <fieldManageability>DeveloperControlled</fieldManageability>
-    <helpText>Display name for this stage as shown on the pipeline board. Example: Initial Inquiry</helpText>
     <label>Stage Label</label>
     <length>150</length>
     <required>true</required>

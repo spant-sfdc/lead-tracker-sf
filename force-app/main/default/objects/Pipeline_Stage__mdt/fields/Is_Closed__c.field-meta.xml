@@ -4,7 +4,6 @@
     <description>Marks this as a terminal stage. Closed stages render with visual distinction on the board, trigger close-stage confirmation dialogs, and are excluded from SLA monitoring.</description>
     <externalId>false</externalId>
     <fieldManageability>DeveloperControlled</fieldManageability>
-    <helpText>Check to mark this as a final stage (won or lost). Closed stages trigger confirmation before a lead is moved into them.</helpText>
     <defaultValue>false</defaultValue>
     <label>Is Closed</label>
     <type>Checkbox</type>

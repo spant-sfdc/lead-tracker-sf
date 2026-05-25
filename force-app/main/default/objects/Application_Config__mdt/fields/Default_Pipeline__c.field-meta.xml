@@ -4,7 +4,6 @@
     <description>Pipeline_Type__c value that the board loads by default on app launch. Must exactly match a Pipeline_Stage__mdt.Pipeline_Type__c value. Users can switch pipelines if multiple are configured.</description>
     <externalId>false</externalId>
     <fieldManageability>DeveloperControlled</fieldManageability>
-    <helpText>Default pipeline to show on the board (e.g., Nonprofit, Enterprise). Must match a Pipeline_Stage__mdt.Pipeline_Type__c value.</helpText>
     <label>Default Pipeline</label>
     <length>100</length>
     <required>false</required>

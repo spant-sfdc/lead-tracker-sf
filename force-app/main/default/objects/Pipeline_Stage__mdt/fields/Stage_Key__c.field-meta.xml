@@ -4,7 +4,6 @@
     <description>Machine-readable unique key for this stage. Stored in Lead.Current_Stage__c. Used as the grouping key on the pipeline board. Must be unique within a Pipeline_Type__c. Use snake_case (e.g., initial_inquiry).</description>
     <externalId>false</externalId>
     <fieldManageability>DeveloperControlled</fieldManageability>
-    <helpText>Unique identifier for this stage (snake_case). Stored on the Lead record. Example: initial_inquiry</helpText>
     <label>Stage Key</label>
     <length>100</length>
     <required>true</required>

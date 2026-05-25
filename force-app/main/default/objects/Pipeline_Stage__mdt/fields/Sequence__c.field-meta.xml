@@ -4,7 +4,6 @@
     <description>Left-to-right column order on the pipeline board within a Pipeline_Type__c. Lower numbers appear first. Use increments of 10 to allow future insertions without resequencing.</description>
     <externalId>false</externalId>
     <fieldManageability>DeveloperControlled</fieldManageability>
-    <helpText>Column position (1–999). Use multiples of 10 to leave room for future stages.</helpText>
     <label>Sequence</label>
     <precision>3</precision>
     <required>true</required>

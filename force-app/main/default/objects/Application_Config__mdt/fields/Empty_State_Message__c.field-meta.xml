@@ -4,7 +4,6 @@
     <description>Message displayed inside an empty pipeline stage column. Customizable per deployment to match organizational tone. If blank, the default Custom Label LT_No_Leads_Found is used.</description>
     <externalId>false</externalId>
     <fieldManageability>DeveloperControlled</fieldManageability>
-    <helpText>Text shown when a pipeline column has no leads. Leave blank to use the default label.</helpText>
     <label>Empty State Message</label>
     <length>500</length>
     <required>false</required>

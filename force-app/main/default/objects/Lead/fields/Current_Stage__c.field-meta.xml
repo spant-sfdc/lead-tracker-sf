@@ -3,7 +3,7 @@
     <fullName>Current_Stage__c</fullName>
     <description>The Stage_Key__c of the Pipeline_Stage__mdt record this lead currently occupies. Set automatically when a lead is moved on the pipeline board or when Status changes via trigger. Used as the primary grouping key for the kanban columns.</description>
     <externalId>false</externalId>
-    <helpText>The pipeline stage this lead is currently in. Managed automatically by Lead Tracker — do not edit manually.</helpText>
+    <inlineHelpText>The pipeline stage this lead is currently in. Managed automatically by Lead Tracker — do not edit manually.</inlineHelpText>
     <label>Current Stage</label>
     <length>100</length>
     <required>false</required>

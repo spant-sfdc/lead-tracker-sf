@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
-    <description>Lead Audit Trail - Complete chronological history of pipeline activity, stage changes, and field updates for all Lead records managed by Lead Tracker.</description>
-    <label>Lead Audits</label>
-    <object>Lead_Audit__c</object>
     <motif>custom:custom20</motif>
 </CustomTab>

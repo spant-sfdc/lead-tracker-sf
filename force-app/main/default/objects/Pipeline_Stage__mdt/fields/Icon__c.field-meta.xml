@@ -4,7 +4,6 @@
     <description>SLDS icon API name displayed in the stage column header. Format: category:name (e.g., standard:lead, utility:call, utility:success). See https://www.lightningdesignsystem.com/icons/ for the full icon catalog.</description>
     <externalId>false</externalId>
     <fieldManageability>DeveloperControlled</fieldManageability>
-    <helpText>SLDS icon name (category:name). Example: standard:lead, utility:call, utility:success</helpText>
     <label>Icon</label>
     <length>100</length>
     <required>false</required>

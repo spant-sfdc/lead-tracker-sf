@@ -3,7 +3,7 @@
     <fullName>Organization_Size__c</fullName>
     <description>Headcount band of the prospect organization. Used for lead scoring, segmentation, and pipeline analytics. Mapped to the nonprofit sector convention (includes paid staff and volunteers where relevant).</description>
     <externalId>false</externalId>
-    <helpText>Approximate size of the prospect organization by number of employees/staff.</helpText>
+    <inlineHelpText>Approximate size of the prospect organization by number of employees/staff.</inlineHelpText>
     <label>Organization Size</label>
     <required>false</required>
     <trackHistory>false</trackHistory>

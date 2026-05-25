@@ -3,7 +3,7 @@
     <fullName>Primary_Stakeholder__c</fullName>
     <description>Name and role of the primary decision-maker or champion at the prospect organization. Free-text to accommodate any stakeholder format. Displayed on the lead card in Spacious density mode.</description>
     <externalId>false</externalId>
-    <helpText>Name and title of the key decision-maker or internal champion. Example: Jane Smith, Executive Director</helpText>
+    <inlineHelpText>Name and title of the key decision-maker or internal champion. Example: Jane Smith, Executive Director</inlineHelpText>
     <label>Primary Stakeholder</label>
     <length>255</length>
     <required>false</required>

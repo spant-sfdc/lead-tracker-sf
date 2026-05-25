@@ -3,7 +3,7 @@
     <fullName>Message__c</fullName>
     <description>Human-readable description of what happened. Written to be meaningful on its own without needing to look up Old_Value__c and New_Value__c. Example: "Stage changed from 'Initial Inquiry' to 'Discovery Call'".</description>
     <externalId>false</externalId>
-    <helpText>Summary of what changed. Displayed in the audit timeline on the lead record.</helpText>
+    <inlineHelpText>Summary of what changed. Displayed in the audit timeline on the lead record.</inlineHelpText>
     <label>Message</label>
     <length>32768</length>
     <trackHistory>false</trackHistory>

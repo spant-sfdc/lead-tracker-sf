@@ -3,7 +3,7 @@
     <fullName>Audit_Type__c</fullName>
     <description>Categorizes what kind of event this audit record represents. Used to filter the audit timeline by event category and to drive reporting on pipeline activity patterns.</description>
     <externalId>false</externalId>
-    <helpText>The type of event that generated this audit entry.</helpText>
+    <inlineHelpText>The type of event that generated this audit entry.</inlineHelpText>
     <label>Audit Type</label>
     <required>true</required>
     <trackHistory>false</trackHistory>

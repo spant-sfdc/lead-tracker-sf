@@ -3,7 +3,7 @@
     <fullName>Old_Value__c</fullName>
     <description>The value of the changed field before this event occurred. Truncated to 255 characters for storage. Paired with New_Value__c to provide a before/after diff for any field change audit entry.</description>
     <externalId>false</externalId>
-    <helpText>Previous value before this change. Null for creation events.</helpText>
+    <inlineHelpText>Previous value before this change. Null for creation events.</inlineHelpText>
     <label>Old Value</label>
     <length>255</length>
     <required>false</required>

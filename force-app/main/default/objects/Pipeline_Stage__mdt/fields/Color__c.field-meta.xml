@@ -4,7 +4,6 @@
     <description>Hex color code applied to the stage column header and lead health indicator. Applied as a CSS custom property so it works in both light and dark density modes. Must be a valid 6-digit hex including the # prefix (e.g., #0070D2).</description>
     <externalId>false</externalId>
     <fieldManageability>DeveloperControlled</fieldManageability>
-    <helpText>Column accent color in #RRGGBB hex format. Example: #0070D2</helpText>
     <label>Color</label>
     <length>7</length>
     <required>false</required>

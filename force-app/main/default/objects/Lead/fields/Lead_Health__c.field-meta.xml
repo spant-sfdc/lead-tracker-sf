@@ -3,7 +3,7 @@
     <fullName>Lead_Health__c</fullName>
     <description>Composite health signal for this lead. Healthy = active engagement and on schedule. At Risk = SLA approaching or engagement declining. Critical = SLA breached or no activity in extended period. Calculated by the stale detection scheduled job or updated by the service layer on key events.</description>
     <externalId>false</externalId>
-    <helpText>Overall lead health: Healthy (on track), At Risk (SLA approaching), or Critical (SLA breached).</helpText>
+    <inlineHelpText>Overall lead health: Healthy (on track), At Risk (SLA approaching), or Critical (SLA breached).</inlineHelpText>
     <label>Lead Health</label>
     <required>false</required>
     <trackHistory>false</trackHistory>

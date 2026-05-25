@@ -3,7 +3,7 @@
     <fullName>Funding_Model__c</fullName>
     <description>Primary funding model of the prospect organization. Critical qualification field for nonprofit pipeline — determines budget cycle, procurement process, and decision-making timeline. Government-funded orgs have longer procurement cycles than fee-for-service orgs.</description>
     <externalId>false</externalId>
-    <helpText>How does this organization primarily fund its operations? Affects budget cycles and decision timelines.</helpText>
+    <inlineHelpText>How does this organization primarily fund its operations? Affects budget cycles and decision timelines.</inlineHelpText>
     <label>Funding Model</label>
     <required>false</required>
     <trackHistory>false</trackHistory>

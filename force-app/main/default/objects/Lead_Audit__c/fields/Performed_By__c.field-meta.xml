@@ -3,7 +3,7 @@
     <fullName>Performed_By__c</fullName>
     <description>The Salesforce User who initiated this event. Populated via UserInfo.getUserId() in the trigger context. For system-initiated events (batch jobs, automations), this will be the running user of the automation.</description>
     <externalId>false</externalId>
-    <helpText>The user who performed this action. System events will show the automation running user.</helpText>
+    <inlineHelpText>The user who performed this action. System events will show the automation running user.</inlineHelpText>
     <label>Performed By</label>
     <referenceTo>User</referenceTo>
     <relationshipLabel>Lead Audits</relationshipLabel>

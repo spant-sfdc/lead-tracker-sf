@@ -3,7 +3,7 @@
     <fullName>Current_CRM__c</fullName>
     <description>The CRM or data management tool the prospect currently uses. Key qualification signal — leads using spreadsheets or no CRM represent a greenfield opportunity, while existing CRM users may be replacing a competitor platform.</description>
     <externalId>false</externalId>
-    <helpText>What CRM or data tool does this prospect currently use for managing contacts and activities?</helpText>
+    <inlineHelpText>What CRM or data tool does this prospect currently use for managing contacts and activities?</inlineHelpText>
     <label>Current CRM</label>
     <required>false</required>
     <trackHistory>false</trackHistory>

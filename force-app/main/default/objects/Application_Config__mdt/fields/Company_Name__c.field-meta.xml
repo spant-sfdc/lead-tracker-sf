@@ -4,7 +4,6 @@
     <description>Organization display name shown in the app header, email templates, and exported reports. Never hardcode the company name in code — always read it from this field.</description>
     <externalId>false</externalId>
     <fieldManageability>DeveloperControlled</fieldManageability>
-    <helpText>Your organization's display name as it appears across the application (e.g., TechPulse, Acme Nonprofit).</helpText>
     <label>Company Name</label>
     <length>100</length>
     <required>false</required>

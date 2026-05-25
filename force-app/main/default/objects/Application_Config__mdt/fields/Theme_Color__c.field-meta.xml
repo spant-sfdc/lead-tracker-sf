@@ -4,7 +4,6 @@
     <description>Primary brand color applied to the application header, primary buttons, and active state indicators. Set as a CSS custom property at the app shell level so all child components inherit it without code changes.</description>
     <externalId>false</externalId>
     <fieldManageability>DeveloperControlled</fieldManageability>
-    <helpText>Primary brand color in hex format (#RRGGBB). Applied to the app header and primary interactive elements.</helpText>
     <label>Theme Color</label>
     <length>7</length>
     <required>false</required>

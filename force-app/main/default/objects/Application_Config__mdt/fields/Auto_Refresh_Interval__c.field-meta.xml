@@ -4,7 +4,6 @@
     <description>How often (in seconds) the pipeline board automatically re-fetches lead data. Set 0 to disable auto-refresh. Recommended range: 60–600 seconds. Shorter intervals increase Apex callout volume.</description>
     <externalId>false</externalId>
     <fieldManageability>DeveloperControlled</fieldManageability>
-    <helpText>Pipeline board auto-refresh interval in seconds. Set 0 to disable. Default: 300 (5 minutes).</helpText>
     <label>Auto Refresh Interval</label>
     <precision>5</precision>
     <required>false</required>
