@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Card_Badge_Config__c</fullName>
+    <description>JSON configuration controlling what data appears as a badge on lead cards in this pipeline stage. Schema: {"field": "API_Name__c", "label": "Display Label", "type": "score|date|text"}. The LWC lead card reads this to render stage-appropriate badges without code changes.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <helpText>JSON badge config. Example: {"field":"Engagement_Score__c","label":"Score","type":"score"}</helpText>
+    <label>Card Badge Config</label>
+    <length>32768</length>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

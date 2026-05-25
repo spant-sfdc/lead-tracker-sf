@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pipeline_Type__c</fullName>
+    <description>Assigns this lead to a specific pipeline (e.g., Nonprofit, Enterprise). Must match a Pipeline_Stage__mdt.Pipeline_Type__c value for the board to correctly place this lead in the right pipeline view. Defaults to Application_Config__mdt.Default_Pipeline__c on insert.</description>
+    <externalId>false</externalId>
+    <helpText>Which pipeline this lead belongs to (e.g., Nonprofit, Enterprise). Determines which board view shows this lead.</helpText>
+    <label>Pipeline Type</label>
+    <length>100</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

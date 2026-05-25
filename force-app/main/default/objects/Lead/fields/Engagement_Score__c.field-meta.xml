@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Engagement_Score__c</fullName>
+    <description>Numeric engagement score from 0 to 100. Higher values indicate stronger engagement signals (email opens, call completions, meeting attendance, form submissions). Updated by the scoring engine in the service layer. Displayed as a badge on lead cards in stages configured for score display.</description>
+    <externalId>false</externalId>
+    <helpText>Engagement score 0–100. Updated automatically based on interaction signals. Higher is more engaged.</helpText>
+    <label>Engagement Score</label>
+    <precision>3</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

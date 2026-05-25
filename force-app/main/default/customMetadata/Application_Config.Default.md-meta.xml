@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Default</label>
+    <protected>false</protected>
+    <values>
+        <field>Company_Name__c</field>
+        <value xsi:type="xsd:string">TechPulse</value>
+    </values>
+    <values>
+        <field>Theme_Color__c</field>
+        <value xsi:type="xsd:string">#032D60</value>
+    </values>
+    <values>
+        <field>Default_Pipeline__c</field>
+        <value xsi:type="xsd:string">Nonprofit</value>
+    </values>
+    <values>
+        <field>Card_Density__c</field>
+        <value xsi:type="xsd:string">Comfortable</value>
+    </values>
+    <values>
+        <field>Auto_Refresh_Interval__c</field>
+        <value xsi:type="xsd:double">300</value>
+    </values>
+    <values>
+        <field>Dashboard_Refresh_Minutes__c</field>
+        <value xsi:type="xsd:double">15</value>
+    </values>
+    <values>
+        <field>Empty_State_Message__c</field>
+        <value xsi:type="xsd:string">No leads in this stage. Move a lead here from another stage or add a new lead to get started.</value>
+    </values>
+</CustomMetadata>

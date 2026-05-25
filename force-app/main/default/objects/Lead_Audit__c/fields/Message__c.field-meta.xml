@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Message__c</fullName>
+    <description>Human-readable description of what happened. Written to be meaningful on its own without needing to look up Old_Value__c and New_Value__c. Example: "Stage changed from 'Initial Inquiry' to 'Discovery Call'".</description>
+    <externalId>false</externalId>
+    <helpText>Summary of what changed. Displayed in the audit timeline on the lead record.</helpText>
+    <label>Message</label>
+    <length>32768</length>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SLA_Days__c</fullName>
+    <description>Number of days a lead may remain in this stage without activity before being flagged as stale. Only enforced when Requires_Activity__c is true. Set 0 for closed stages to disable SLA monitoring.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <helpText>Days allowed without activity before this lead is flagged as stale. Works with Requires Activity. Set to 0 for closed stages.</helpText>
+    <label>SLA Days</label>
+    <precision>3</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

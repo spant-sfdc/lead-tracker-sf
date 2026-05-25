@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Theme_Color__c</fullName>
+    <description>Primary brand color applied to the application header, primary buttons, and active state indicators. Set as a CSS custom property at the app shell level so all child components inherit it without code changes.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <helpText>Primary brand color in hex format (#RRGGBB). Applied to the app header and primary interactive elements.</helpText>
+    <label>Theme Color</label>
+    <length>7</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Global application configuration and branding for Lead Tracker. The Default record drives all org-wide settings. Override by creating additional records for tenant-specific configuration in multi-tenant deployments.</description>
+    <label>Application Config</label>
+    <pluralLabel>Application Configs</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

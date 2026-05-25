@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Organization_Size__c</fullName>
+    <description>Headcount band of the prospect organization. Used for lead scoring, segmentation, and pipeline analytics. Mapped to the nonprofit sector convention (includes paid staff and volunteers where relevant).</description>
+    <externalId>false</externalId>
+    <helpText>Approximate size of the prospect organization by number of employees/staff.</helpText>
+    <label>Organization Size</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>false</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>1–10 Employees</fullName>
+                <default>false</default>
+                <label>1–10 Employees</label>
+            </value>
+            <value>
+                <fullName>11–50 Employees</fullName>
+                <default>false</default>
+                <label>11–50 Employees</label>
+            </value>
+            <value>
+                <fullName>51–200 Employees</fullName>
+                <default>false</default>
+                <label>51–200 Employees</label>
+            </value>
+            <value>
+                <fullName>201–1,000 Employees</fullName>
+                <default>false</default>
+                <label>201–1,000 Employees</label>
+            </value>
+            <value>
+                <fullName>1,000+ Employees</fullName>
+                <default>false</default>
+                <label>1,000+ Employees</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

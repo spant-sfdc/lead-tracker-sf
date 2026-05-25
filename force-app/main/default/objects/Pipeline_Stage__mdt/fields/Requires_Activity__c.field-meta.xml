@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Requires_Activity__c</fullName>
+    <description>When true, leads in this stage that have no activity within SLA_Days__c days are flagged as stale (Is_Stale__c = true) and shown with a warning indicator on the pipeline board.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <helpText>Check to enable stale lead detection for this stage. Works with SLA Days to determine when a lead becomes stale.</helpText>
+    <defaultValue>false</defaultValue>
+    <label>Requires Activity</label>
+    <type>Checkbox</type>
+</CustomField>

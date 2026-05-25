@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Current_CRM__c</fullName>
+    <description>The CRM or data management tool the prospect currently uses. Key qualification signal — leads using spreadsheets or no CRM represent a greenfield opportunity, while existing CRM users may be replacing a competitor platform.</description>
+    <externalId>false</externalId>
+    <helpText>What CRM or data tool does this prospect currently use for managing contacts and activities?</helpText>
+    <label>Current CRM</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>false</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Salesforce</fullName>
+                <default>false</default>
+                <label>Salesforce</label>
+            </value>
+            <value>
+                <fullName>HubSpot</fullName>
+                <default>false</default>
+                <label>HubSpot</label>
+            </value>
+            <value>
+                <fullName>Microsoft Dynamics</fullName>
+                <default>false</default>
+                <label>Microsoft Dynamics</label>
+            </value>
+            <value>
+                <fullName>Zoho CRM</fullName>
+                <default>false</default>
+                <label>Zoho CRM</label>
+            </value>
+            <value>
+                <fullName>Monday.com</fullName>
+                <default>false</default>
+                <label>Monday.com</label>
+            </value>
+            <value>
+                <fullName>Airtable</fullName>
+                <default>false</default>
+                <label>Airtable</label>
+            </value>
+            <value>
+                <fullName>Spreadsheets Only</fullName>
+                <default>false</default>
+                <label>Spreadsheets Only</label>
+            </value>
+            <value>
+                <fullName>No CRM</fullName>
+                <default>false</default>
+                <label>No CRM</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

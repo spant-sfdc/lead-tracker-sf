@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
+        <fullName>Company_Name</fullName>
+        <categories>LeadTracker</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Organization name displayed across the application</shortDescription>
+        <value>TechPulse</value>
+    </labels>
+    <labels>
         <fullName>LT_App_Title</fullName>
         <categories>LeadTracker</categories>
         <language>en_US</language>
@@ -63,5 +71,53 @@
         <protected>false</protected>
         <shortDescription>Confirmation prompt before moving a lead to a closed stage</shortDescription>
         <value>Move this lead to a closed stage? This action cannot be easily reversed.</value>
+    </labels>
+    <labels>
+        <fullName>LT_Audit_Trail_Title</fullName>
+        <categories>LeadTracker</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Audit trail section heading</shortDescription>
+        <value>Activity &amp; Audit Trail</value>
+    </labels>
+    <labels>
+        <fullName>LT_Lead_Health_Healthy</fullName>
+        <categories>LeadTracker</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Lead health status label - Healthy</shortDescription>
+        <value>Healthy</value>
+    </labels>
+    <labels>
+        <fullName>LT_Lead_Health_At_Risk</fullName>
+        <categories>LeadTracker</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Lead health status label - At Risk</shortDescription>
+        <value>At Risk</value>
+    </labels>
+    <labels>
+        <fullName>LT_Lead_Health_Critical</fullName>
+        <categories>LeadTracker</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Lead health status label - Critical</shortDescription>
+        <value>Critical</value>
+    </labels>
+    <labels>
+        <fullName>LT_Stale_Lead_Warning</fullName>
+        <categories>LeadTracker</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Warning shown on stale lead cards</shortDescription>
+        <value>Stale — SLA exceeded</value>
+    </labels>
+    <labels>
+        <fullName>LT_SLA_Overdue</fullName>
+        <categories>LeadTracker</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Indicator shown when follow-up date is past due</shortDescription>
+        <value>Follow-up overdue</value>
     </labels>
 </CustomLabels>

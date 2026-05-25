@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Dashboard_Refresh_Minutes__c</fullName>
+    <description>How often (in minutes) analytics dashboard charts re-query aggregated data. Separate from pipeline board refresh. Set 0 to disable. Recommended: 15–60 minutes.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <helpText>Dashboard chart refresh interval in minutes. Set 0 to disable auto-refresh on dashboards. Default: 15.</helpText>
+    <label>Dashboard Refresh Minutes</label>
+    <precision>3</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

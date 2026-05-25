@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Won__c</fullName>
+    <description>Marks this as a positive outcome stage. Won stages contribute to conversion rate metrics, trigger success celebrations in the UI, and can initiate downstream workflows.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <helpText>Check to mark this stage as a successful conversion. Only one stage per pipeline type should have this checked.</helpText>
+    <defaultValue>false</defaultValue>
+    <label>Is Won</label>
+    <type>Checkbox</type>
+</CustomField>

@@ -15,7 +15,25 @@
     <types>
         <members>LeadTracker_Pipeline_Stage__mdt</members>
         <members>LeadTracker_App_Config__mdt</members>
+        <members>Pipeline_Stage__mdt</members>
+        <members>Application_Config__mdt</members>
+        <members>Lead_Audit__c</members>
         <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Lead.Current_Stage__c</members>
+        <members>Lead.Pipeline_Type__c</members>
+        <members>Lead.Last_Activity_Date__c</members>
+        <members>Lead.Next_Follow_Up__c</members>
+        <members>Lead.Lead_Health__c</members>
+        <members>Lead.Engagement_Score__c</members>
+        <members>Lead.Closed_Reason__c</members>
+        <members>Lead.Is_Stale__c</members>
+        <members>Lead.Primary_Stakeholder__c</members>
+        <members>Lead.Organization_Size__c</members>
+        <members>Lead.Current_CRM__c</members>
+        <members>Lead.Funding_Model__c</members>
+        <name>CustomField</name>
     </types>
     <types>
         <members>*</members>

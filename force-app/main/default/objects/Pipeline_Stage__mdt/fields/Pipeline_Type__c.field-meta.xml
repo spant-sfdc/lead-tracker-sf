@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pipeline_Type__c</fullName>
+    <description>Groups this stage into a named pipeline. The Application_Config__mdt.Default_Pipeline__c value controls which pipeline the board loads by default. Multiple pipeline types can coexist in a single org (e.g., Nonprofit, Enterprise, SMB).</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <helpText>Pipeline group name (e.g., Nonprofit, Enterprise, SMB). Must match Lead.Pipeline_Type__c values for correct board grouping.</helpText>
+    <label>Pipeline Type</label>
+    <length>100</length>
+    <required>true</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

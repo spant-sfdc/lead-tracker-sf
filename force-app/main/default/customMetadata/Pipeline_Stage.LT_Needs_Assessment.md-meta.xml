@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>LT - Needs Assessment</label>
+    <protected>false</protected>
+    <values>
+        <field>Stage_Key__c</field>
+        <value xsi:type="xsd:string">needs_assessment</value>
+    </values>
+    <values>
+        <field>Stage_Label__c</field>
+        <value xsi:type="xsd:string">Needs Assessment</value>
+    </values>
+    <values>
+        <field>Sequence__c</field>
+        <value xsi:type="xsd:double">30</value>
+    </values>
+    <values>
+        <field>Color__c</field>
+        <value xsi:type="xsd:string">#E8830A</value>
+    </values>
+    <values>
+        <field>Icon__c</field>
+        <value xsi:type="xsd:string">utility:note</value>
+    </values>
+    <values>
+        <field>Is_Closed__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Is_Won__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Requires_Activity__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>SLA_Days__c</field>
+        <value xsi:type="xsd:double">10</value>
+    </values>
+    <values>
+        <field>Pipeline_Type__c</field>
+        <value xsi:type="xsd:string">Nonprofit</value>
+    </values>
+    <values>
+        <field>Card_Badge_Config__c</field>
+        <value xsi:type="xsd:string">{"field":"Engagement_Score__c","label":"Engagement","type":"score"}</value>
+    </values>
+</CustomMetadata>

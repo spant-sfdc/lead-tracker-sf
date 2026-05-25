@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Next_Follow_Up__c</fullName>
+    <description>The date by which the owning rep must follow up with this lead. Displayed as a badge on the lead card when the stage is configured to show it. Overdue follow-up dates trigger visual warnings on the pipeline board.</description>
+    <externalId>false</externalId>
+    <helpText>The next scheduled follow-up date for this lead. Overdue dates appear highlighted on the pipeline board.</helpText>
+    <label>Next Follow Up</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lead_Health__c</fullName>
+    <description>Composite health signal for this lead. Healthy = active engagement and on schedule. At Risk = SLA approaching or engagement declining. Critical = SLA breached or no activity in extended period. Calculated by the stale detection scheduled job or updated by the service layer on key events.</description>
+    <externalId>false</externalId>
+    <helpText>Overall lead health: Healthy (on track), At Risk (SLA approaching), or Critical (SLA breached).</helpText>
+    <label>Lead Health</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>false</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Healthy</fullName>
+                <default>true</default>
+                <label>Healthy</label>
+            </value>
+            <value>
+                <fullName>At Risk</fullName>
+                <default>false</default>
+                <label>At Risk</label>
+            </value>
+            <value>
+                <fullName>Critical</fullName>
+                <default>false</default>
+                <label>Critical</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

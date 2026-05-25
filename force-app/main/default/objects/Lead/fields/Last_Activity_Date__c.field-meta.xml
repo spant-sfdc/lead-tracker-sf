@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Last_Activity_Date__c</fullName>
+    <description>Date of the most recent sales activity (call, email, meeting) logged against this lead. Updated by trigger when Activity records are created. Used by the SLA monitoring engine to detect stale leads when compared against Pipeline_Stage__mdt.SLA_Days__c.</description>
+    <externalId>false</externalId>
+    <helpText>Date of the last logged activity. Used to detect stale leads based on the stage SLA.</helpText>
+    <label>Last Activity Date</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

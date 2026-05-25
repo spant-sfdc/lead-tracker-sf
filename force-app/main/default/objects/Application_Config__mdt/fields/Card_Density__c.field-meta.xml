@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Card_Density__c</fullName>
+    <description>Controls how much information is visible on each lead card without expanding it. Compact shows minimal info, Comfortable is the default balanced view, and Spacious shows full card detail by default. Accepted values: Compact | Comfortable | Spacious.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <helpText>Lead card information density: Compact, Comfortable (default), or Spacious.</helpText>
+    <label>Card Density</label>
+    <length>20</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

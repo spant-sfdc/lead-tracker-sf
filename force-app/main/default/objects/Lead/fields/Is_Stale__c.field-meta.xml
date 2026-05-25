@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Stale__c</fullName>
+    <description>Flag set to true by the stale detection job when a lead in an activity-required stage has not had any activity for more than Pipeline_Stage__mdt.SLA_Days__c days. Cleared automatically when a new activity is logged. Stale leads are visually highlighted on the pipeline board.</description>
+    <externalId>false</externalId>
+    <helpText>True when this lead has exceeded its stage SLA without activity. Cleared automatically when a new activity is logged.</helpText>
+    <defaultValue>false</defaultValue>
+    <label>Is Stale</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
