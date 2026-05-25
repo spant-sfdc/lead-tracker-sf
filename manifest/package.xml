@@ -9,7 +9,7 @@
         <name>ApexTrigger</name>
     </types>
     <types>
-        <members>*</members>
+        <members>LeadTracker</members>
         <name>CustomApplication</name>
     </types>
     <types>
@@ -42,6 +42,10 @@
     <types>
         <members>CustomLabels</members>
         <name>CustomLabels</name>
+    </types>
+    <types>
+        <members>LeadTracker_UtilityBar</members>
+        <name>FlexiPage</name>
     </types>
     <types>
         <members>*</members>
