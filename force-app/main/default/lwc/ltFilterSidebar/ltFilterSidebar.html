@@ -1,0 +1,58 @@
+<template>
+    <aside class="fs-sidebar" aria-label="Filter Panel">
+        <!-- Search -->
+        <div class="fs-section">
+            <h3 class="fs-section-title">Search</h3>
+            <div class="fs-search-wrap">
+                <lightning-icon icon-name="utility:search" size="x-small" class="fs-search-icon" alternative-text="Search"></lightning-icon>
+                <input type="search"
+                       class="fs-search-input"
+                       placeholder="Name or company..."
+                       oninput={handleSearchInput}
+                       aria-label="Search leads" />
+            </div>
+        </div>
+
+        <!-- Health filter -->
+        <div class="fs-section">
+            <h3 class="fs-section-title">Health</h3>
+            <div class="fs-health-group">
+                <template for:each={healthPills} for:item="pill">
+                    <button key={pill.id}
+                            class={pill.cssClass}
+                            type="button"
+                            data-health={pill.id}
+                            onclick={handleHealthClick}
+                            aria-pressed={pill.active}>
+                        <span class="fs-pill-dot" style={pill.dotStyle}></span>
+                        {pill.label}
+                    </button>
+                </template>
+            </div>
+        </div>
+
+        <!-- Additional filters -->
+        <div class="fs-section">
+            <h3 class="fs-section-title">Show</h3>
+            <label class="fs-toggle-row">
+                <span class="fs-toggle-wrap">
+                    <input type="checkbox"
+                           class="fs-checkbox"
+                           onchange={handleStaleToggle}
+                           aria-label="Show stale only" />
+                    <span class="fs-toggle-slider"></span>
+                </span>
+                <span class="fs-toggle-label">Stale Only</span>
+            </label>
+        </div>
+
+        <!-- Clear filters -->
+        <template lwc:if={hasActiveFilters}>
+            <div class="fs-section fs-section--clear">
+                <button class="fs-clear-btn" type="button" onclick={handleClearFilters}>
+                    Clear all filters
+                </button>
+            </div>
+        </template>
+    </aside>
+</template>

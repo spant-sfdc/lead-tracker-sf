@@ -1,0 +1,18 @@
+<template>
+    <div class="kb-board">
+        <template for:each={stages} for:item="column">
+            <c-lt-kanban-column
+                key={column.stageKey}
+                column={column}
+                stage-options={stageOptions}>
+            </c-lt-kanban-column>
+        </template>
+        <template lwc:if={isEmpty}>
+            <div class="kb-empty">
+                <lightning-icon icon-name="utility:board" size="medium" class="kb-empty-icon"></lightning-icon>
+                <p class="kb-empty-title">No stages configured</p>
+                <p class="kb-empty-msg">Add Pipeline Stage custom metadata records to get started.</p>
+            </div>
+        </template>
+    </div>
+</template>

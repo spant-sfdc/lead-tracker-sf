@@ -1,0 +1,32 @@
+<template>
+    <div class="qa-panel" role="menu" aria-label="Lead Actions">
+        <template lwc:if={hasStageOptions}>
+            <p class="qa-section-title">Move to Stage</p>
+            <ul class="qa-list">
+                <template for:each={filteredStageOptions} for:item="opt">
+                    <li key={opt.stageKey}
+                        class="qa-item"
+                        role="menuitem"
+                        data-key={opt.stageKey}
+                        onclick={handleStageMove}>
+                        <span class="qa-dot" style={opt.dotStyle}></span>
+                        <span class="qa-label">{opt.stageLabel}</span>
+                    </li>
+                </template>
+            </ul>
+            <div class="qa-divider" role="separator"></div>
+        </template>
+        <ul class="qa-list">
+            <template lwc:if={isStale}>
+                <li class="qa-item qa-item--accent" role="menuitem" onclick={handleClearStale}>
+                    Clear Stale Flag
+                </li>
+            </template>
+            <template lwc:else>
+                <li class="qa-item" role="menuitem" onclick={handleMarkStale}>
+                    Mark as Stale
+                </li>
+            </template>
+        </ul>
+    </div>
+</template>

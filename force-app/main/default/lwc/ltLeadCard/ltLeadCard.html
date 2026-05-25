@@ -1,48 +1,93 @@
 <template>
-    <article class="lt-lead-card" onclick={handleClick}>
-        <div class="lt-lead-card__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
-            <div class="lt-lead-card__name slds-col slds-has-flexi-truncate">
-                <p class="slds-truncate slds-text-heading_small" title={lead.Name}>{lead.Name}</p>
-                <p class="slds-truncate slds-text-body_small slds-text-color_weak" title={lead.Company}>
-                    {lead.Company}
-                </p>
+    <article class={cardClass}
+             draggable="true"
+             ondragstart={handleDragStart}
+             ondragend={handleDragEnd}
+             onclick={handleCardClick}>
+
+        <template lwc:if={card.isStale}>
+            <div class="lc-stale-ribbon">Stale</div>
+        </template>
+
+        <!-- Header: company + action button -->
+        <div class="lc-header">
+            <div class="lc-company-block">
+                <span class="lc-company" title={card.company}>{card.company}</span>
+                <span class="lc-name" title={card.name}>{card.name}</span>
             </div>
-            <div class="lt-lead-card__icon slds-col slds-no-flex">
-                <lightning-icon
-                    icon-name={ratingIcon}
-                    size="x-small"
-                    alternative-text={lead.Rating}
-                    title={lead.Rating}
-                ></lightning-icon>
-            </div>
+            <button class="lc-action-btn"
+                    type="button"
+                    title="Actions"
+                    onclick={handleActionToggle}>
+                <lightning-icon icon-name="utility:overflow" size="x-small"></lightning-icon>
+            </button>
         </div>
-        <div class="lt-lead-card__body">
-            <template lwc:if={lead.Email}>
-                <div class="lt-lead-card__row slds-grid slds-grid_vertical-align-center">
-                    <lightning-icon
-                        icon-name="utility:email"
-                        size="xx-small"
-                        class="slds-var-m-right_x-small lt-lead-card__row-icon"
-                        alternative-text="Email"
-                    ></lightning-icon>
-                    <span class="slds-truncate slds-text-body_small" title={lead.Email}>{lead.Email}</span>
-                </div>
+
+        <!-- Health + Stage pills -->
+        <div class="lc-pills">
+            <template lwc:if={card.leadHealth}>
+                <span class={healthClass}>{card.leadHealth}</span>
             </template>
-            <template lwc:if={lead.Phone}>
-                <div class="lt-lead-card__row slds-grid slds-grid_vertical-align-center">
-                    <lightning-icon
-                        icon-name="utility:call"
-                        size="xx-small"
-                        class="slds-var-m-right_x-small lt-lead-card__row-icon"
-                        alternative-text="Phone"
-                    ></lightning-icon>
-                    <span class="slds-truncate slds-text-body_small" title={lead.Phone}>{lead.Phone}</span>
-                </div>
+            <template lwc:if={currentStageLabel}>
+                <span class="lc-pill lc-pill--stage">{currentStageLabel}</span>
             </template>
         </div>
-        <div class="lt-lead-card__footer slds-grid slds-grid_align-spread">
-            <lightning-badge label={lead.LeadSource} class="lt-lead-card__source-badge"></lightning-badge>
-            <span class="slds-text-body_small slds-text-color_weak">{formattedDate}</span>
-        </div>
+
+        <!-- Meta grid -->
+        <dl class="lc-meta">
+            <template lwc:if={card.lastActivityDate}>
+                <div class="lc-meta-row">
+                    <dt>Last Activity</dt>
+                    <dd>{formattedLastActivity}</dd>
+                </div>
+            </template>
+            <template lwc:if={card.nextFollowUp}>
+                <div class="lc-meta-row">
+                    <dt>Follow Up</dt>
+                    <dd class={followUpClass}>{formattedNextFollowUp}</dd>
+                </div>
+            </template>
+            <template lwc:if={card.fundingModel}>
+                <div class="lc-meta-row">
+                    <dt>Funding</dt>
+                    <dd>{card.fundingModel}</dd>
+                </div>
+            </template>
+            <template lwc:if={card.primaryStakeholder}>
+                <div class="lc-meta-row">
+                    <dt>Stakeholder</dt>
+                    <dd>{card.primaryStakeholder}</dd>
+                </div>
+            </template>
+        </dl>
+
+        <!-- Engagement score bar -->
+        <template lwc:if={hasScore}>
+            <div class="lc-score-row">
+                <span class="lc-score-label">Score</span>
+                <div class="lc-score-track">
+                    <div class="lc-score-fill" style={scoreFillStyle}></div>
+                </div>
+                <span class="lc-score-val">{card.engagementScore}</span>
+            </div>
+        </template>
+
+        <!-- Badges -->
+        <template lwc:if={hasBadges}>
+            <div class="lc-badges">
+                <template for:each={card.badges} for:item="badge">
+                    <span key={badge} class="lc-badge">{badge}</span>
+                </template>
+            </div>
+        </template>
+
+        <!-- Quick actions popover -->
+        <template lwc:if={showActions}>
+            <c-lt-quick-actions
+                card={card}
+                stage-options={stageOptions}
+                onquickaction={handleQuickAction}>
+            </c-lt-quick-actions>
+        </template>
     </article>
 </template>

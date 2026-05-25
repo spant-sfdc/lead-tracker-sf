@@ -1,0 +1,57 @@
+<template>
+    <div class="pw-root">
+        <!-- App Header -->
+        <c-lt-app-header></c-lt-app-header>
+
+        <!-- Workspace toolbar -->
+        <div class="pw-toolbar">
+            <div class="pw-toolbar-left">
+                <template lwc:if={boardData}>
+                    <span class="pw-stat">{boardData.totalLeads} leads</span>
+                    <span class="pw-stat-sep">·</span>
+                    <span class="pw-stat pw-stat--stale">{boardData.staleCount} stale</span>
+                </template>
+            </div>
+            <div class="pw-toolbar-right">
+                <button class="pw-icon-btn" type="button" title="Refresh board" onclick={handleRefresh}>
+                    <lightning-icon icon-name="utility:refresh" size="x-small" alternative-text="Refresh"></lightning-icon>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main area: sidebar + board -->
+        <div class="pw-main">
+            <c-lt-filter-sidebar onfilterchange={handleFilterChange}></c-lt-filter-sidebar>
+
+            <div class="pw-board-area">
+                <!-- Loading -->
+                <template lwc:if={isLoading}>
+                    <div class="pw-state-container">
+                        <lightning-spinner alternative-text="Loading pipeline..." size="medium"></lightning-spinner>
+                        <p class="pw-state-msg">Loading pipeline...</p>
+                    </div>
+                </template>
+
+                <!-- Error -->
+                <template lwc:elseif={hasError}>
+                    <div class="pw-state-container">
+                        <lightning-icon icon-name="utility:error" size="large" variant="error" alternative-text="Error"></lightning-icon>
+                        <p class="pw-state-msg pw-state-msg--error">{errorMessage}</p>
+                        <button class="pw-retry-btn" type="button" onclick={handleRefresh}>Try Again</button>
+                    </div>
+                </template>
+
+                <!-- Board -->
+                <template lwc:else>
+                    <c-lt-kanban-board
+                        stages={filteredStages}
+                        stage-options={stageOptions}
+                        onleadmove={handleLeadMove}
+                        onquickaction={handleQuickAction}
+                        onleadselect={handleLeadSelect}>
+                    </c-lt-kanban-board>
+                </template>
+            </div>
+        </div>
+    </div>
+</template>

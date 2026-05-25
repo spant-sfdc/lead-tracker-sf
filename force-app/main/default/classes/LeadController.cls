@@ -116,6 +116,29 @@ public with sharing class LeadController {
         }
     }
 
+    // ── Stale flag ────────────────────────────────────────────────────────────
+
+    /**
+     * Sets or clears the Is_Stale__c flag on a single lead.
+     * Called by the kanban quick-action menu.
+     */
+    @AuraEnabled
+    public static void setLeadStale(Id leadId, Boolean isStale) {
+        try {
+            if (leadId == null) throw new LeadTrackerException('leadId is required.');
+            Lead l = new Lead(Id = leadId, Is_Stale__c = isStale);
+            update l;
+            Lead_Audit__c audit = isStale
+                ? LeadAuditService.buildStaleRecord(leadId)
+                : LeadAuditService.buildStaleClearedRecord(leadId);
+            LeadAuditService.bulkLog(new List<Lead_Audit__c>{ audit });
+        } catch (AuraHandledException ahe) {
+            throw ahe;
+        } catch (Exception e) {
+            throw new AuraHandledException('Stale update failed: ' + e.getMessage());
+        }
+    }
+
     // ── Timeline ──────────────────────────────────────────────────────────────
 
     /** Returns the audit timeline for a single lead. cacheable=false — audit grows continuously. */

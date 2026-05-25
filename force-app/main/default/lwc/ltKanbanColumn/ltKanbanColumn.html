@@ -1,0 +1,52 @@
+<template>
+    <div class={columnClass}
+         ondragover={handleDragOver}
+         ondragenter={handleDragEnter}
+         ondragleave={handleDragLeave}
+         ondrop={handleDrop}>
+
+        <!-- Column header with stage color accent -->
+        <div class="kc-header" style={headerAccentStyle}>
+            <div class="kc-header-left">
+                <template lwc:if={column.icon}>
+                    <lightning-icon
+                        icon-name={column.icon}
+                        size="x-small"
+                        class="kc-header-icon"
+                        alternative-text={column.stageLabel}>
+                    </lightning-icon>
+                </template>
+                <span class="kc-title">{column.stageLabel}</span>
+            </div>
+            <span class="kc-count">{column.leadCount}</span>
+        </div>
+
+        <!-- Drop zone hint -->
+        <template lwc:if={isDragOver}>
+            <div class="kc-drop-hint" style={dropHintStyle}>
+                Drop to move here
+            </div>
+        </template>
+
+        <!-- Lead cards -->
+        <div class="kc-cards">
+            <template for:each={column.leads} for:item="card">
+                <c-lt-lead-card
+                    key={card.leadId}
+                    card={card}
+                    stage-options={stageOptions}>
+                </c-lt-lead-card>
+            </template>
+            <template lwc:if={isEmpty}>
+                <div class="kc-empty">
+                    <lightning-icon
+                        icon-name="utility:check"
+                        size="x-small"
+                        class="kc-empty-icon">
+                    </lightning-icon>
+                    <p class="kc-empty-text">No leads</p>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

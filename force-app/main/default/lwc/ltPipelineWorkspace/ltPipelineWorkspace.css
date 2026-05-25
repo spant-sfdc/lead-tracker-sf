@@ -1,0 +1,129 @@
+/* Design tokens — cascade into all child components via shadow DOM */
+:host {
+    display: block;
+    height: 100%;
+
+    --lt-bg-workspace: #F4F5F8;
+    --lt-bg-card: #FFFFFF;
+    --lt-border-color: #E3E7EE;
+    --lt-text-primary: #16213E;
+    --lt-text-secondary: #706E6B;
+    --lt-shadow-card: 0 1px 4px rgba(22, 33, 62, 0.06);
+    --lt-shadow-hover: 0 4px 12px rgba(22, 33, 62, 0.1);
+    --lt-health-healthy: #00875A;
+    --lt-health-at-risk: #B75000;
+    --lt-health-critical: #C23934;
+    --lt-accent: #1B3A6B;
+}
+
+.pw-root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--lt-bg-workspace);
+    overflow: hidden;
+}
+
+/* Toolbar */
+.pw-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1.5rem;
+    background: var(--lt-bg-card);
+    border-bottom: 1px solid var(--lt-border-color);
+    min-height: 40px;
+}
+
+.pw-toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+.pw-stat {
+    font-size: 0.8125rem;
+    color: var(--lt-text-secondary);
+    font-weight: 500;
+}
+
+.pw-stat-sep {
+    color: var(--lt-border-color);
+    font-weight: 300;
+}
+
+.pw-stat--stale {
+    color: var(--lt-health-at-risk);
+}
+
+.pw-icon-btn {
+    background: none;
+    border: 1px solid var(--lt-border-color);
+    border-radius: 6px;
+    padding: 4px 6px;
+    cursor: pointer;
+    color: var(--lt-text-secondary);
+    transition: background 0.12s ease, border-color 0.12s ease;
+    line-height: 1;
+}
+
+.pw-icon-btn:hover {
+    background: var(--lt-bg-workspace);
+    border-color: #C8D0DC;
+}
+
+/* Main layout */
+.pw-main {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* Board area */
+.pw-board-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    padding-top: 0.875rem;
+}
+
+/* State containers (loading / error) */
+.pw-state-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.875rem;
+    height: 100%;
+    padding: 3rem;
+}
+
+.pw-state-msg {
+    font-size: 0.9375rem;
+    color: var(--lt-text-secondary);
+    margin: 0;
+    text-align: center;
+}
+
+.pw-state-msg--error {
+    color: var(--lt-health-critical);
+}
+
+.pw-retry-btn {
+    background: var(--lt-accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.12s ease;
+}
+
+.pw-retry-btn:hover {
+    opacity: 0.85;
+}
