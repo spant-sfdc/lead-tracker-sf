@@ -12,8 +12,5 @@
         <type>Region</type>
     </flexiPageRegions>
     <masterLabel>Lead Tracker Home</masterLabel>
-    <template>
-        <name>AppPage_1Column</name>
-    </template>
     <type>AppPage</type>
 </FlexiPage>
