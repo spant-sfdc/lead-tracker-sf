@@ -12,5 +12,8 @@
         <type>Region</type>
     </flexiPageRegions>
     <masterLabel>Lead Tracker Home</masterLabel>
+    <template>
+        <name>force:AppPageDefault</name>
+    </template>
     <type>AppPage</type>
 </FlexiPage>
