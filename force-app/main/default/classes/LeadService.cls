@@ -9,12 +9,10 @@ public with sharing class LeadService {
 
     private LeadSelector          leadSelector;
     private PipelineStageSelector stageSelector;
-    private LeadAuditService      auditService;
 
     public LeadService() {
         this.leadSelector  = new LeadSelector();
         this.stageSelector = new PipelineStageSelector();
-        this.auditService  = new LeadAuditService();
     }
 
     // ── Stage movement ────────────────────────────────────────────────────────
@@ -56,8 +54,9 @@ public with sharing class LeadService {
         List<Lead> leads = leadSelector.getLeadsById(idSet);
 
         // Build update list and audit list together — no loops with SOQL/DML
-        List<Lead>         toUpdate = new List<Lead>();
-        List<Lead_Audit__c> audits  = new List<Lead_Audit__c>();
+        List<Lead>          toUpdate   = new List<Lead>();
+        List<Lead_Audit__c> audits     = new List<Lead_Audit__c>();
+        List<Integer>       auditIndex = new List<Integer>(); // tracks which toUpdate index maps to which audit
 
         Map<Id, Lead> leadMap = new Map<Id, Lead>(leads);
         for (Id lid : leadIds) {
@@ -67,24 +66,26 @@ public with sharing class LeadService {
                 continue;
             }
             String oldStage = l.Current_Stage__c;
-            l.Current_Stage__c = newStageKey;
+            l.Current_Stage__c      = newStageKey;
             l.Last_Activity_Date__c = Date.today();
             toUpdate.add(l);
-            audits.add(auditService.buildStageChangeRecord(lid, oldStage, newStageKey));
+            audits.add(LeadAuditService.buildStageChangeRecord(lid, oldStage, newStageKey));
+            auditIndex.add(toUpdate.size() - 1);
         }
 
-        // Single DML — enforced with sharing by the class declaration
+        // Single DML — sharing enforced by class declaration
         if (!toUpdate.isEmpty()) {
             List<Database.SaveResult> saveResults = Database.update(toUpdate, false);
             for (Integer i = 0; i < saveResults.size(); i++) {
                 Database.SaveResult sr = saveResults[i];
                 Lead l = toUpdate[i];
                 if (sr.isSuccess()) {
-                    results.add(new LeadTrackerDTO.MoveResult(l.Id, true, 'Moved to ' + targetStage.Stage_Label__c, newStageKey));
+                    results.add(new LeadTrackerDTO.MoveResult(
+                        l.Id, true, 'Moved to ' + targetStage.Stage_Label__c, newStageKey));
                 } else {
                     String errMsg = sr.getErrors()[0].getMessage();
                     results.add(new LeadTrackerDTO.MoveResult(l.Id, false, errMsg, null));
-                    audits.set(i, null); // nullify failed audit so we don't log phantom entries
+                    audits.set(i, null); // nullify audit for the failed save
                 }
             }
         }
@@ -96,7 +97,7 @@ public with sharing class LeadService {
                 validAudits.add(a);
             }
         }
-        auditService.bulkLog(validAudits);
+        LeadAuditService.bulkLog(validAudits);
 
         return results;
     }
@@ -124,11 +125,12 @@ public with sharing class LeadService {
         update as user l;
 
         List<Lead_Audit__c> audits = new List<Lead_Audit__c>();
-        audits.add(auditService.buildFieldUpdateRecord(leadId, 'Engagement_Score__c', oldScore, String.valueOf(score)));
+        audits.add(LeadAuditService.buildFieldUpdateRecord(
+            leadId, 'Engagement_Score__c', oldScore, String.valueOf(score)));
         if (l.Lead_Health__c != oldHealth) {
-            audits.add(auditService.buildHealthUpdateRecord(leadId, oldHealth, l.Lead_Health__c));
+            audits.add(LeadAuditService.buildHealthUpdateRecord(leadId, oldHealth, l.Lead_Health__c));
         }
-        auditService.bulkLog(audits);
+        LeadAuditService.bulkLog(audits);
     }
 
     // ── Stale flag management ─────────────────────────────────────────────────
@@ -141,21 +143,21 @@ public with sharing class LeadService {
         if (candidates == null || candidates.isEmpty()) {
             return;
         }
-        List<Lead>         toUpdate = new List<Lead>();
-        List<Lead_Audit__c> audits  = new List<Lead_Audit__c>();
+        List<Lead>          toUpdate = new List<Lead>();
+        List<Lead_Audit__c> audits   = new List<Lead_Audit__c>();
 
         for (Lead l : candidates) {
             if (!l.Is_Stale__c) {
-                l.Is_Stale__c   = true;
+                l.Is_Stale__c    = true;
                 l.Lead_Health__c = 'Critical';
                 toUpdate.add(l);
-                audits.add(auditService.buildStaleRecord(l.Id));
+                audits.add(LeadAuditService.buildStaleRecord(l.Id));
             }
         }
 
         if (!toUpdate.isEmpty()) {
             Database.update(toUpdate, false);
-            auditService.bulkLog(audits);
+            LeadAuditService.bulkLog(audits);
         }
     }
 

@@ -9,7 +9,7 @@ public with sharing class PipelineStageSelector {
 
     // ── Pipeline_Stage__mdt ───────────────────────────────────────────────────
 
-    /** Returns all active pipeline stages ordered by sequence ascending. */
+    /** Returns all pipeline stages ordered by sequence ascending. */
     public List<Pipeline_Stage__mdt> getAllActiveStages() {
         return [
             SELECT DeveloperName, MasterLabel,
@@ -18,12 +18,11 @@ public with sharing class PipelineStageSelector {
                    Requires_Activity__c, SLA_Days__c,
                    Pipeline_Type__c, Card_Badge_Config__c
             FROM   Pipeline_Stage__mdt
-            WHERE  Is_Active__c = true
             ORDER  BY Sequence__c ASC
         ];
     }
 
-    /** Returns active stages for a specific pipeline type, ordered by sequence. */
+    /** Returns stages for a specific pipeline type, ordered by sequence. */
     public List<Pipeline_Stage__mdt> getActiveStagesByPipelineType(String pipelineType) {
         if (String.isBlank(pipelineType)) {
             return getAllActiveStages();
@@ -35,8 +34,7 @@ public with sharing class PipelineStageSelector {
                    Requires_Activity__c, SLA_Days__c,
                    Pipeline_Type__c, Card_Badge_Config__c
             FROM   Pipeline_Stage__mdt
-            WHERE  Is_Active__c = true
-            AND    Pipeline_Type__c = :pipelineType
+            WHERE  Pipeline_Type__c = :pipelineType
             ORDER  BY Sequence__c ASC
         ];
     }
@@ -57,14 +55,13 @@ public with sharing class PipelineStageSelector {
                    Pipeline_Type__c, Card_Badge_Config__c
             FROM   Pipeline_Stage__mdt
             WHERE  Stage_Key__c = :stageKey
-            AND    Is_Active__c = true
             LIMIT  1
         ];
         return results.isEmpty() ? null : results[0];
     }
 
     /**
-     * Returns a map of Stage_Key__c → Pipeline_Stage__mdt for all active stages.
+     * Returns a map of Stage_Key__c → Pipeline_Stage__mdt for all stages.
      * Used by service layer to avoid SOQL inside loops.
      */
     public Map<String, Pipeline_Stage__mdt> getActiveStageMapByKey() {
