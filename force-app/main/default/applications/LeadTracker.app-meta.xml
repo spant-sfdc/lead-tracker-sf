@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <defaultLandingTab>Lead_Tracker</defaultLandingTab>
+    <description>Lead Tracker - Modern pipeline management application for Salesforce. Metadata-driven kanban board for managing leads through configurable stages.</description>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
+    <isOmniPinnedViewEnabled>false</isOmniPinnedViewEnabled>
+    <label>Lead Tracker</label>
+    <navType>Console</navType>
+    <tabs>Lead_Tracker</tabs>
+    <tabs>standard-Lead</tabs>
+    <uiType>Lightning</uiType>
+</CustomApplication>

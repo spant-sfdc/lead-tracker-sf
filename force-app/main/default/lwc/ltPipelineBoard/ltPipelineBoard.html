@@ -1,0 +1,64 @@
+<template>
+    <div class="lt-pipeline-board">
+        <c-lt-app-header></c-lt-app-header>
+
+        <div class="lt-pipeline-body">
+            <template lwc:if={isLoading}>
+                <div class="lt-loading-container slds-grid slds-grid_align-center slds-var-p-around_large">
+                    <lightning-spinner
+                        alternative-text={label.LT_Loading}
+                        size="medium"
+                    ></lightning-spinner>
+                </div>
+            </template>
+
+            <template lwc:elseif={hasError}>
+                <div class="slds-var-p-around_medium">
+                    <lightning-formatted-text value={errorMessage}></lightning-formatted-text>
+                </div>
+            </template>
+
+            <template lwc:else>
+                <div class="lt-columns">
+                    <template for:each={pipelineColumns} for:item="col">
+                        <div key={col.DeveloperName} class="lt-column">
+                            <div
+                                class="lt-column__header"
+                                style={col.headerStyle}
+                            >
+                                <lightning-icon
+                                    icon-name={col.Icon_Name__c}
+                                    size="x-small"
+                                    class="slds-var-m-right_x-small"
+                                    alternative-text={col.Stage_Name__c}
+                                ></lightning-icon>
+                                <span class="lt-column__title">{col.Stage_Name__c}</span>
+                                <lightning-badge
+                                    label={col.cardCount}
+                                    class="lt-column__badge"
+                                ></lightning-badge>
+                            </div>
+                            <div class="lt-column__body">
+                                <template lwc:if={col.hasLeads}>
+                                    <template for:each={col.leads} for:item="lead">
+                                        <c-lt-lead-card
+                                            key={lead.Id}
+                                            lead={lead}
+                                        ></c-lt-lead-card>
+                                    </template>
+                                </template>
+                                <template lwc:else>
+                                    <div class="lt-column__empty slds-text-align_center slds-var-p-around_medium">
+                                        <p class="slds-text-color_weak slds-text-body_small">
+                                            {label.LT_No_Leads_Found}
+                                        </p>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

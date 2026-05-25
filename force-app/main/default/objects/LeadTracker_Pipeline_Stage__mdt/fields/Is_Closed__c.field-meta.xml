@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Closed__c</fullName>
+    <description>Marks this as a terminal stage. Closed stages render with visual distinction on the pipeline board.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <defaultValue>false</defaultValue>
+    <label>Is Closed</label>
+    <type>Checkbox</type>
+</CustomField>

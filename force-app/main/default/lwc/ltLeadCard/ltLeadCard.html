@@ -1,0 +1,48 @@
+<template>
+    <article class="lt-lead-card" onclick={handleClick}>
+        <div class="lt-lead-card__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+            <div class="lt-lead-card__name slds-col slds-has-flexi-truncate">
+                <p class="slds-truncate slds-text-heading_small" title={lead.Name}>{lead.Name}</p>
+                <p class="slds-truncate slds-text-body_small slds-text-color_weak" title={lead.Company}>
+                    {lead.Company}
+                </p>
+            </div>
+            <div class="lt-lead-card__icon slds-col slds-no-flex">
+                <lightning-icon
+                    icon-name={ratingIcon}
+                    size="x-small"
+                    alternative-text={lead.Rating}
+                    title={lead.Rating}
+                ></lightning-icon>
+            </div>
+        </div>
+        <div class="lt-lead-card__body">
+            <template lwc:if={lead.Email}>
+                <div class="lt-lead-card__row slds-grid slds-grid_vertical-align-center">
+                    <lightning-icon
+                        icon-name="utility:email"
+                        size="xx-small"
+                        class="slds-var-m-right_x-small lt-lead-card__row-icon"
+                        alternative-text="Email"
+                    ></lightning-icon>
+                    <span class="slds-truncate slds-text-body_small" title={lead.Email}>{lead.Email}</span>
+                </div>
+            </template>
+            <template lwc:if={lead.Phone}>
+                <div class="lt-lead-card__row slds-grid slds-grid_vertical-align-center">
+                    <lightning-icon
+                        icon-name="utility:call"
+                        size="xx-small"
+                        class="slds-var-m-right_x-small lt-lead-card__row-icon"
+                        alternative-text="Phone"
+                    ></lightning-icon>
+                    <span class="slds-truncate slds-text-body_small" title={lead.Phone}>{lead.Phone}</span>
+                </div>
+            </template>
+        </div>
+        <div class="lt-lead-card__footer slds-grid slds-grid_align-spread">
+            <lightning-badge label={lead.LeadSource} class="lt-lead-card__source-badge"></lightning-badge>
+            <span class="slds-text-body_small slds-text-color_weak">{formattedDate}</span>
+        </div>
+    </article>
+</template>

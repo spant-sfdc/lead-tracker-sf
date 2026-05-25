@@ -1,0 +1,19 @@
+:host {
+    --lt-header-bg: #032D60;
+    display: block;
+}
+
+.lt-app-header {
+    background: var(--lt-header-bg);
+    padding: 0.625rem 1.25rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.lt-app-header__title {
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 0;
+}

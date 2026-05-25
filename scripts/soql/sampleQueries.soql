@@ -1,0 +1,34 @@
+-- Lead Tracker SOQL Reference Queries
+-- Run in Developer Console > Query Editor or via sf data query
+
+-- All active leads by status
+SELECT Id, Name, Company, Status, LeadSource, Email, Owner.Name, LastModifiedDate
+FROM Lead
+WHERE IsConverted = false
+ORDER BY Status, LastModifiedDate DESC
+LIMIT 200;
+
+-- Lead count per pipeline stage
+SELECT Status, COUNT(Id) total
+FROM Lead
+WHERE IsConverted = false
+GROUP BY Status
+ORDER BY COUNT(Id) DESC;
+
+-- Active pipeline stage configuration
+SELECT DeveloperName, MasterLabel, Stage_Name__c, Sort_Order__c, Icon_Name__c, Color_Hex__c, Is_Closed__c, Is_Won__c, Is_Active__c
+FROM LeadTracker_Pipeline_Stage__mdt
+WHERE Is_Active__c = true
+ORDER BY Sort_Order__c ASC;
+
+-- App config
+SELECT DeveloperName, MasterLabel, App_Name__c, Primary_Color__c, Secondary_Color__c, Default_Tab__c
+FROM LeadTracker_App_Config__mdt
+WHERE DeveloperName = 'Default';
+
+-- Leads modified in last 7 days
+SELECT Id, Name, Company, Status, LastModifiedDate, LastModifiedBy.Name
+FROM Lead
+WHERE IsConverted = false
+AND LastModifiedDate = LAST_N_DAYS:7
+ORDER BY LastModifiedDate DESC;

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Lead Tracker Pipeline Board - Kanban-style view of all active leads organized by pipeline stage</description>
+    <label>Lead Tracker</label>
+    <lwcComponent>ltPipelineBoard</lwcComponent>
+    <motif>custom:custom63</motif>
+</CustomTab>

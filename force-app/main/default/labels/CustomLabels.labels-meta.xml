@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>LT_App_Title</fullName>
+        <categories>LeadTracker</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Lead Tracker application title</shortDescription>
+        <value>Lead Tracker</value>
+    </labels>
+    <labels>
+        <fullName>LT_Loading</fullName>
+        <categories>LeadTracker</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Loading state label</shortDescription>
+        <value>Loading...</value>
+    </labels>
+    <labels>
+        <fullName>LT_No_Leads_Found</fullName>
+        <categories>LeadTracker</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Empty state label for pipeline columns</shortDescription>
+        <value>No leads in this stage</value>
+    </labels>
+    <labels>
+        <fullName>LT_Error_Generic</fullName>
+        <categories>LeadTracker</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Generic error message</shortDescription>
+        <value>An unexpected error occurred. Please refresh and try again.</value>
+    </labels>
+    <labels>
+        <fullName>LT_Error_Update_Failed</fullName>
+        <categories>LeadTracker</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Lead update failure message</shortDescription>
+        <value>Failed to update lead status. Please try again.</value>
+    </labels>
+    <labels>
+        <fullName>LT_Lead_Moved_Success</fullName>
+        <categories>LeadTracker</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Success message after moving a lead</shortDescription>
+        <value>Lead moved successfully</value>
+    </labels>
+    <labels>
+        <fullName>LT_Pipeline_Board_Title</fullName>
+        <categories>LeadTracker</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Pipeline board section heading</shortDescription>
+        <value>Pipeline Board</value>
+    </labels>
+    <labels>
+        <fullName>LT_Confirm_Move_Lead</fullName>
+        <categories>LeadTracker</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Confirmation prompt before moving a lead to a closed stage</shortDescription>
+        <value>Move this lead to a closed stage? This action cannot be easily reversed.</value>
+    </labels>
+</CustomLabels>
