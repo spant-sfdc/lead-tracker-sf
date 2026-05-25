@@ -13,7 +13,7 @@
     </flexiPageRegions>
     <masterLabel>Lead Tracker Home</masterLabel>
     <template>
-        <name>force:AppPageDefault</name>
+        <name>one:appPageTemplateOneColumn</name>
     </template>
     <type>AppPage</type>
 </FlexiPage>
