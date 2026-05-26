@@ -1,0 +1,230 @@
+<template>
+    <div class="db-root">
+        <!-- App Header -->
+        <c-lt-app-header></c-lt-app-header>
+
+        <!-- Page Header -->
+        <div class="db-page-header">
+            <div class="db-page-header-left">
+                <h1 class="db-title">Pipeline Analytics</h1>
+                <template lwc:if={refreshedAtDisplay}>
+                    <span class="db-refreshed">Updated {refreshedAtDisplay}</span>
+                </template>
+            </div>
+            <button class="db-refresh-btn" type="button" onclick={handleRefresh} disabled={isLoading}>
+                <lightning-icon icon-name="utility:refresh" size="x-small" alternative-text="Refresh"></lightning-icon>
+                <span>Refresh</span>
+            </button>
+        </div>
+
+        <!-- Loading -->
+        <template lwc:if={isLoading}>
+            <div class="db-state-container">
+                <lightning-spinner alternative-text="Loading analytics..." size="medium"></lightning-spinner>
+                <p class="db-state-msg">Loading analytics...</p>
+            </div>
+        </template>
+
+        <!-- Error -->
+        <template lwc:elseif={hasError}>
+            <div class="db-state-container">
+                <lightning-icon icon-name="utility:error" size="large" variant="error" alternative-text="Error"></lightning-icon>
+                <p class="db-state-msg db-state-msg--error">{errorMessage}</p>
+                <button class="db-retry-btn" type="button" onclick={handleRefresh}>Try Again</button>
+            </div>
+        </template>
+
+        <!-- Dashboard content -->
+        <template lwc:else>
+            <div class="db-content">
+
+                <!-- KPI row -->
+                <div class="db-kpi-grid">
+                    <c-lt-metric-card
+                        value={data.totalLeads}
+                        label="Total Leads"
+                        icon="utility:people_list">
+                    </c-lt-metric-card>
+                    <c-lt-metric-card
+                        value={data.openLeads}
+                        label="Open Leads"
+                        icon="utility:open_folder">
+                    </c-lt-metric-card>
+                    <c-lt-metric-card
+                        value={data.staleLeads}
+                        label="Stale Leads"
+                        icon="utility:warning"
+                        variant="warning">
+                    </c-lt-metric-card>
+                    <c-lt-metric-card
+                        value={data.overdueFollowUps}
+                        label="Overdue Follow-ups"
+                        icon="utility:clock"
+                        variant="danger">
+                    </c-lt-metric-card>
+                    <c-lt-metric-card
+                        value={data.activitiesThisWeek}
+                        label="Activities This Week"
+                        icon="utility:task2"
+                        variant="success">
+                    </c-lt-metric-card>
+                    <c-lt-metric-card
+                        value={conversionRateDisplay}
+                        label="Conversion Rate"
+                        icon="utility:trending_up"
+                        sublabel={conversionRateSublabel}>
+                    </c-lt-metric-card>
+                </div>
+
+                <!-- Charts: Stage distribution + Health breakdown -->
+                <div class="db-chart-grid">
+
+                    <!-- Stage Distribution -->
+                    <div class="db-card">
+                        <div class="db-card-header">
+                            <span class="db-card-title">Leads by Stage</span>
+                            <span class="db-card-badge">{data.totalLeads} total</span>
+                        </div>
+                        <div class="db-bars">
+                            <template for:each={data.stageMetrics} for:item="sm">
+                                <div class="db-bar-row" key={sm.stageKey}>
+                                    <div class="db-bar-meta">
+                                        <span class="db-bar-dot" style={sm.dotStyle}></span>
+                                        <span class="db-bar-name">{sm.stageLabel}</span>
+                                    </div>
+                                    <div class="db-bar-track">
+                                        <div class="db-bar-fill" style={sm.barStyle}></div>
+                                    </div>
+                                    <span class="db-bar-count">{sm.count}</span>
+                                    <span class="db-bar-pct">{sm.percentage}%</span>
+                                </div>
+                            </template>
+                            <template lwc:if={noStageData}>
+                                <p class="db-empty-msg">No stage data yet.</p>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Health Breakdown -->
+                    <div class="db-card">
+                        <div class="db-card-header">
+                            <span class="db-card-title">Lead Health</span>
+                            <span class="db-card-badge">{data.openLeads} open</span>
+                        </div>
+                        <div class="db-bars">
+                            <div class="db-bar-row">
+                                <div class="db-bar-meta">
+                                    <span class="db-bar-dot db-dot--healthy"></span>
+                                    <span class="db-bar-name">Healthy</span>
+                                </div>
+                                <div class="db-bar-track">
+                                    <div class="db-bar-fill db-fill--healthy" style={healthyBarStyle}></div>
+                                </div>
+                                <span class="db-bar-count">{data.healthyLeads}</span>
+                                <span class="db-bar-pct">{healthyPct}%</span>
+                            </div>
+                            <div class="db-bar-row">
+                                <div class="db-bar-meta">
+                                    <span class="db-bar-dot db-dot--at-risk"></span>
+                                    <span class="db-bar-name">At Risk</span>
+                                </div>
+                                <div class="db-bar-track">
+                                    <div class="db-bar-fill db-fill--at-risk" style={atRiskBarStyle}></div>
+                                </div>
+                                <span class="db-bar-count">{data.atRiskLeads}</span>
+                                <span class="db-bar-pct">{atRiskPct}%</span>
+                            </div>
+                            <div class="db-bar-row">
+                                <div class="db-bar-meta">
+                                    <span class="db-bar-dot db-dot--critical"></span>
+                                    <span class="db-bar-name">Critical</span>
+                                </div>
+                                <div class="db-bar-track">
+                                    <div class="db-bar-fill db-fill--critical" style={criticalBarStyle}></div>
+                                </div>
+                                <span class="db-bar-count">{data.criticalLeads}</span>
+                                <span class="db-bar-pct">{criticalPct}%</span>
+                            </div>
+                        </div>
+
+                        <!-- Engagement Score -->
+                        <div class="db-score-block">
+                            <div class="db-card-header db-card-header--inner">
+                                <span class="db-card-title">Avg Engagement Score</span>
+                                <span class="db-score-num">{data.avgEngagementScore}</span>
+                            </div>
+                            <div class="db-score-track">
+                                <div class="db-score-fill" style={avgScoreStyle}></div>
+                            </div>
+                            <div class="db-score-labels">
+                                <span>0</span>
+                                <span>50</span>
+                                <span>100</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /db-chart-grid row 1 -->
+
+                <!-- Charts: Pipeline breakdown + Follow-up overview -->
+                <div class="db-chart-grid">
+
+                    <!-- Pipeline Breakdown -->
+                    <div class="db-card">
+                        <div class="db-card-header">
+                            <span class="db-card-title">Leads by Pipeline</span>
+                        </div>
+                        <div class="db-bars">
+                            <template for:each={data.pipelineMetrics} for:item="pm">
+                                <div class="db-bar-row" key={pm.pipelineType}>
+                                    <div class="db-bar-meta">
+                                        <span class="db-bar-name">{pm.pipelineType}</span>
+                                    </div>
+                                    <div class="db-bar-track">
+                                        <div class="db-bar-fill db-fill--pipeline" style={pm.pipelineBarStyle}></div>
+                                    </div>
+                                    <span class="db-bar-count">{pm.count}</span>
+                                    <span class="db-bar-pct">{pm.percentage}%</span>
+                                </div>
+                            </template>
+                            <template lwc:if={noPipelineData}>
+                                <p class="db-empty-msg">No pipeline data yet.</p>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Follow-ups & Activity -->
+                    <div class="db-card">
+                        <div class="db-card-header">
+                            <span class="db-card-title">Follow-ups &amp; Activity</span>
+                        </div>
+                        <div class="db-stat-grid">
+                            <div class="db-stat-item db-stat-item--danger">
+                                <span class="db-stat-num">{data.overdueFollowUps}</span>
+                                <span class="db-stat-lbl">Overdue</span>
+                                <lightning-icon icon-name="utility:error" size="x-small" variant="error" alternative-text="Overdue"></lightning-icon>
+                            </div>
+                            <div class="db-stat-item db-stat-item--upcoming">
+                                <span class="db-stat-num">{data.upcomingFollowUps}</span>
+                                <span class="db-stat-lbl">Next 7 Days</span>
+                                <lightning-icon icon-name="utility:event" size="x-small" alternative-text="Upcoming"></lightning-icon>
+                            </div>
+                            <div class="db-stat-item db-stat-item--activity">
+                                <span class="db-stat-num">{data.activitiesThisWeek}</span>
+                                <span class="db-stat-lbl">Activities (Week)</span>
+                                <lightning-icon icon-name="utility:task2" size="x-small" alternative-text="Activities"></lightning-icon>
+                            </div>
+                            <div class="db-stat-item db-stat-item--converted">
+                                <span class="db-stat-num">{data.convertedLeads}</span>
+                                <span class="db-stat-lbl">Converted</span>
+                                <lightning-icon icon-name="utility:success" size="x-small" variant="success" alternative-text="Converted"></lightning-icon>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /db-chart-grid row 2 -->
+
+            </div><!-- /db-content -->
+        </template>
+    </div>
+</template>

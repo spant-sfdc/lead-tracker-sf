@@ -130,4 +130,71 @@ public class LeadTrackerDTO {
         @AuraEnabled public String  color      { get; set; }
         @AuraEnabled public Boolean isClosed   { get; set; }
     }
+
+    // ── Dashboard ─────────────────────────────────────────────────────────────
+
+    /** Top-level analytics payload returned by LeadController.getDashboardData(). */
+    public class DashboardData {
+        @AuraEnabled public Integer              totalLeads         { get; set; }
+        @AuraEnabled public Integer              openLeads          { get; set; }
+        @AuraEnabled public Integer              convertedLeads     { get; set; }
+        @AuraEnabled public Integer              staleLeads         { get; set; }
+        @AuraEnabled public Integer              healthyLeads       { get; set; }
+        @AuraEnabled public Integer              atRiskLeads        { get; set; }
+        @AuraEnabled public Integer              criticalLeads      { get; set; }
+        @AuraEnabled public Integer              overdueFollowUps   { get; set; }
+        @AuraEnabled public Integer              upcomingFollowUps  { get; set; }
+        @AuraEnabled public Integer              activitiesThisWeek { get; set; }
+        @AuraEnabled public Decimal              conversionRate     { get; set; }
+        @AuraEnabled public Decimal              avgEngagementScore { get; set; }
+        @AuraEnabled public List<StageMetric>    stageMetrics       { get; set; }
+        @AuraEnabled public List<PipelineMetric> pipelineMetrics    { get; set; }
+        @AuraEnabled public String               refreshedAt        { get; set; }
+
+        public DashboardData() {
+            totalLeads         = 0;
+            openLeads          = 0;
+            convertedLeads     = 0;
+            staleLeads         = 0;
+            healthyLeads       = 0;
+            atRiskLeads        = 0;
+            criticalLeads      = 0;
+            overdueFollowUps   = 0;
+            upcomingFollowUps  = 0;
+            activitiesThisWeek = 0;
+            conversionRate     = 0;
+            avgEngagementScore = 0;
+            stageMetrics       = new List<StageMetric>();
+            pipelineMetrics    = new List<PipelineMetric>();
+            refreshedAt        = String.valueOf(System.now());
+        }
+    }
+
+    /** Lead count and percentage for a single pipeline stage (dashboard bar chart). */
+    public class StageMetric {
+        @AuraEnabled public String  stageKey   { get; set; }
+        @AuraEnabled public String  stageLabel { get; set; }
+        @AuraEnabled public String  color      { get; set; }
+        @AuraEnabled public Integer sequence   { get; set; }
+        @AuraEnabled public Integer count      { get; set; }
+        @AuraEnabled public Decimal percentage { get; set; }
+
+        public StageMetric() {
+            count      = 0;
+            percentage = 0;
+            sequence   = 999;
+        }
+    }
+
+    /** Lead count and percentage for a single pipeline type (dashboard bar chart). */
+    public class PipelineMetric {
+        @AuraEnabled public String  pipelineType { get; set; }
+        @AuraEnabled public Integer count        { get; set; }
+        @AuraEnabled public Decimal percentage   { get; set; }
+
+        public PipelineMetric() {
+            count      = 0;
+            percentage = 0;
+        }
+    }
 }

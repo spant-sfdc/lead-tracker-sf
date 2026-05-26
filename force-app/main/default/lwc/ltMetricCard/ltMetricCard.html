@@ -1,0 +1,14 @@
+<template>
+    <div class={cardClass}>
+        <div class="mc-icon-wrap">
+            <lightning-icon icon-name={icon} size="small" alternative-text={label}></lightning-icon>
+        </div>
+        <div class="mc-body">
+            <div class="mc-value">{value}</div>
+            <div class="mc-label">{label}</div>
+            <template lwc:if={sublabel}>
+                <div class="mc-sublabel">{sublabel}</div>
+            </template>
+        </div>
+    </div>
+</template>

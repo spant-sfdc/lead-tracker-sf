@@ -1,0 +1,343 @@
+/* Design tokens — mirrors ltPipelineWorkspace so the dashboard tab matches */
+:host {
+    display: block;
+    height: 100%;
+
+    --lt-bg-workspace: #F4F5F8;
+    --lt-bg-card: #FFFFFF;
+    --lt-border-color: #E3E7EE;
+    --lt-text-primary: #16213E;
+    --lt-text-secondary: #706E6B;
+    --lt-shadow-card: 0 1px 4px rgba(22, 33, 62, 0.06);
+    --lt-shadow-hover: 0 4px 12px rgba(22, 33, 62, 0.1);
+    --lt-health-healthy: #00875A;
+    --lt-health-at-risk: #B75000;
+    --lt-health-critical: #C23934;
+    --lt-accent: #1B3A6B;
+}
+
+.db-root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--lt-bg-workspace);
+    overflow: hidden;
+}
+
+/* Page header */
+.db-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.625rem 1.5rem;
+    background: var(--lt-bg-card);
+    border-bottom: 1px solid var(--lt-border-color);
+    flex-shrink: 0;
+}
+
+.db-page-header-left {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+}
+
+.db-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--lt-text-primary);
+    margin: 0;
+}
+
+.db-refreshed {
+    font-size: 0.75rem;
+    color: var(--lt-text-secondary);
+}
+
+.db-refresh-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    background: none;
+    border: 1px solid var(--lt-border-color);
+    border-radius: 6px;
+    padding: 0.3125rem 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--lt-text-secondary);
+    cursor: pointer;
+    transition: background 0.12s ease, border-color 0.12s ease;
+}
+
+.db-refresh-btn:hover:not(:disabled) {
+    background: var(--lt-bg-workspace);
+    border-color: #C8D0DC;
+}
+
+.db-refresh-btn:disabled {
+    opacity: 0.55;
+    cursor: default;
+}
+
+/* Scrollable content area */
+.db-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.25rem 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* State containers */
+.db-state-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.875rem;
+    padding: 3rem;
+}
+
+.db-state-msg {
+    font-size: 0.9375rem;
+    color: var(--lt-text-secondary);
+    margin: 0;
+}
+
+.db-state-msg--error { color: var(--lt-health-critical); }
+
+.db-retry-btn {
+    background: var(--lt-accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.12s ease;
+}
+
+.db-retry-btn:hover { opacity: 0.85; }
+
+/* ── KPI grid ──────────────────────────────────────────────────────────────── */
+.db-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.875rem;
+}
+
+/* ── Chart card grid ───────────────────────────────────────────────────────── */
+.db-chart-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.875rem;
+}
+
+/* ── Shared card ───────────────────────────────────────────────────────────── */
+.db-card {
+    background: var(--lt-bg-card);
+    border: 1px solid var(--lt-border-color);
+    border-radius: 10px;
+    padding: 1.125rem 1.25rem 1.25rem;
+    box-shadow: var(--lt-shadow-card);
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+}
+
+.db-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.db-card-header--inner {
+    margin-top: 0.5rem;
+}
+
+.db-card-title {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--lt-text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.db-card-badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--lt-text-secondary);
+    background: var(--lt-bg-workspace);
+    border: 1px solid var(--lt-border-color);
+    border-radius: 20px;
+    padding: 0.125rem 0.625rem;
+}
+
+/* ── Bar chart rows ────────────────────────────────────────────────────────── */
+.db-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+}
+
+.db-bar-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 36px 42px;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.db-bar-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.4375rem;
+    min-width: 0;
+}
+
+.db-bar-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Health dots — fixed colors */
+.db-dot--healthy  { background-color: var(--lt-health-healthy);  }
+.db-dot--at-risk  { background-color: var(--lt-health-at-risk);  }
+.db-dot--critical { background-color: var(--lt-health-critical); }
+
+.db-bar-name {
+    font-size: 0.8125rem;
+    color: var(--lt-text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.db-bar-track {
+    height: 8px;
+    background: var(--lt-bg-workspace);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.db-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background-color: var(--lt-accent);
+    transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    min-width: 2px;
+}
+
+/* Health bar colors */
+.db-fill--healthy  { background-color: var(--lt-health-healthy);  }
+.db-fill--at-risk  { background-color: var(--lt-health-at-risk);  }
+.db-fill--critical { background-color: var(--lt-health-critical); }
+.db-fill--pipeline { background-color: #5867E8; }
+
+.db-bar-count {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--lt-text-primary);
+    text-align: right;
+}
+
+.db-bar-pct {
+    font-size: 0.75rem;
+    color: var(--lt-text-secondary);
+    text-align: right;
+}
+
+/* ── Engagement score ──────────────────────────────────────────────────────── */
+.db-score-block {
+    border-top: 1px solid var(--lt-border-color);
+    padding-top: 0.875rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.db-score-num {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--lt-accent);
+}
+
+.db-score-track {
+    height: 10px;
+    background: var(--lt-bg-workspace);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.db-score-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #1B3A6B 0%, #5867E8 100%);
+    border-radius: 5px;
+    transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    min-width: 2px;
+}
+
+.db-score-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.6875rem;
+    color: var(--lt-text-secondary);
+}
+
+/* ── Follow-up stat grid ───────────────────────────────────────────────────── */
+.db-stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.db-stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    background: var(--lt-bg-workspace);
+    border: 1px solid var(--lt-border-color);
+    border-radius: 8px;
+    padding: 0.875rem 1rem;
+    position: relative;
+}
+
+.db-stat-item lightning-icon {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    opacity: 0.55;
+}
+
+.db-stat-num {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--lt-text-primary);
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+.db-stat-lbl {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--lt-text-secondary);
+}
+
+.db-stat-item--danger    .db-stat-num { color: var(--lt-health-critical); }
+.db-stat-item--upcoming  .db-stat-num { color: var(--lt-accent); }
+.db-stat-item--activity  .db-stat-num { color: var(--lt-health-healthy); }
+.db-stat-item--converted .db-stat-num { color: var(--lt-health-healthy); }
+
+/* Empty state */
+.db-empty-msg {
+    font-size: 0.875rem;
+    color: var(--lt-text-secondary);
+    margin: 0.5rem 0;
+    text-align: center;
+}

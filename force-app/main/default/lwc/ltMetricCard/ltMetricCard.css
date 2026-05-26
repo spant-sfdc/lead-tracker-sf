@@ -1,0 +1,68 @@
+:host {
+    display: block;
+}
+
+.mc-card {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    background: var(--lt-bg-card, #fff);
+    border: 1px solid var(--lt-border-color, #E3E7EE);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    box-shadow: var(--lt-shadow-card, 0 1px 4px rgba(22, 33, 62, 0.06));
+    transition: box-shadow 0.15s ease;
+}
+
+.mc-card:hover {
+    box-shadow: var(--lt-shadow-hover, 0 4px 12px rgba(22, 33, 62, 0.1));
+}
+
+.mc-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: rgba(27, 58, 107, 0.08);
+    flex-shrink: 0;
+}
+
+.mc-card--success .mc-icon-wrap { background: rgba(0, 135, 90, 0.10); }
+.mc-card--warning .mc-icon-wrap { background: rgba(183, 80, 0, 0.10); }
+.mc-card--danger  .mc-icon-wrap { background: rgba(194, 57, 52, 0.10); }
+
+.mc-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-width: 0;
+}
+
+.mc-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--lt-text-primary, #16213E);
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+.mc-card--danger  .mc-value { color: var(--lt-health-critical, #C23934); }
+.mc-card--warning .mc-value { color: var(--lt-health-at-risk, #B75000); }
+.mc-card--success .mc-value { color: var(--lt-health-healthy, #00875A); }
+
+.mc-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--lt-text-secondary, #706E6B);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.1875rem;
+}
+
+.mc-sublabel {
+    font-size: 0.6875rem;
+    color: var(--lt-text-secondary, #706E6B);
+    margin-top: 0.125rem;
+}

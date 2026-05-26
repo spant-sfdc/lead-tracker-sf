@@ -15,6 +15,7 @@
     <label>TechPulse Lead Tracker</label>
     <navType>Console</navType>
     <tabs>Lead_Tracker</tabs>
+    <tabs>Lead_Tracker_Dashboard</tabs>
     <tabs>standard-Lead</tabs>
     <tabs>standard-Account</tabs>
     <tabs>standard-Opportunity</tabs>
@@ -25,6 +26,9 @@
     <workspaceConfig>
         <mappings>
             <tab>Lead_Tracker</tab>
+        </mappings>
+        <mappings>
+            <tab>Lead_Tracker_Dashboard</tab>
         </mappings>
         <mappings>
             <tab>standard-Lead</tab>

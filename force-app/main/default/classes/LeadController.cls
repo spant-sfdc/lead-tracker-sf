@@ -263,4 +263,141 @@ public with sharing class LeadController {
             throw new AuraHandledException('Unable to load files: ' + e.getMessage());
         }
     }
+
+    // ── Dashboard ─────────────────────────────────────────────────────────────
+
+    /**
+     * Returns aggregated metrics for the analytics dashboard.
+     * Uses 3 aggregate + 5 scalar SOQL queries; CMT lookups via selector cache.
+     */
+    @AuraEnabled
+    public static LeadTrackerDTO.DashboardData getDashboardData() {
+        try {
+            PipelineStageSelector stageSelector = new PipelineStageSelector();
+
+            // 1. Leads by stage + health in one aggregate query
+            List<AggregateResult> stageHealthRows = [
+                SELECT Current_Stage__c stageKey, Lead_Health__c health, COUNT(Id) cnt
+                FROM   Lead
+                WHERE  IsConverted = false
+                WITH   USER_MODE
+                GROUP BY Current_Stage__c, Lead_Health__c
+            ];
+
+            // 2. Leads by pipeline type
+            List<AggregateResult> pipelineRows = [
+                SELECT Pipeline_Type__c pipelineType, COUNT(Id) cnt
+                FROM   Lead
+                WHERE  IsConverted = false
+                WITH   USER_MODE
+                GROUP BY Pipeline_Type__c
+            ];
+
+            // 3. Average engagement score
+            List<AggregateResult> scoreRows = [
+                SELECT AVG(Engagement_Score__c) avgScore
+                FROM   Lead
+                WHERE  IsConverted = false AND Engagement_Score__c != null
+                WITH   USER_MODE
+            ];
+
+            // 4. Scalar counts
+            Integer convertedLeads    = [SELECT COUNT() FROM Lead WHERE IsConverted = true WITH USER_MODE];
+            Integer staleLeads        = [SELECT COUNT() FROM Lead WHERE Is_Stale__c = true AND IsConverted = false WITH USER_MODE];
+            Integer overdueFollowUps  = [SELECT COUNT() FROM Lead WHERE Next_Follow_Up__c < TODAY AND IsConverted = false WITH USER_MODE];
+            Date    nextWeek          = Date.today().addDays(7);
+            Integer upcomingFollowUps = [SELECT COUNT() FROM Lead WHERE Next_Follow_Up__c >= TODAY AND Next_Follow_Up__c <= :nextWeek AND IsConverted = false WITH USER_MODE];
+            Integer activitiesThisWeek = [SELECT COUNT() FROM Task WHERE Status = 'Completed' AND ActivityDate = THIS_WEEK WITH USER_MODE];
+
+            // 5. CMT stage map — labels, colors, ordering (no SOQL in loops)
+            Map<String, Pipeline_Stage__mdt> stageMap    = stageSelector.getActiveStageMapByKey();
+            List<Pipeline_Stage__mdt>        allStages   = stageSelector.getAllActiveStages();
+
+            // 6. Accumulate per-stage metrics and health totals
+            Map<String, LeadTrackerDTO.StageMetric> smMap = new Map<String, LeadTrackerDTO.StageMetric>();
+            Integer totalLeads = 0, healthyLeads = 0, atRiskLeads = 0, criticalLeads = 0;
+
+            for (AggregateResult row : stageHealthRows) {
+                String  sk     = (String)  row.get('stageKey');
+                String  health = (String)  row.get('health');
+                Integer cnt    = (Integer) row.get('cnt');
+                if (sk == null) sk = 'Unassigned';
+                totalLeads += cnt;
+
+                if (!smMap.containsKey(sk)) {
+                    LeadTrackerDTO.StageMetric sm = new LeadTrackerDTO.StageMetric();
+                    sm.stageKey   = sk;
+                    Pipeline_Stage__mdt mdt = stageMap.get(sk);
+                    sm.stageLabel = mdt != null ? mdt.Stage_Label__c : sk;
+                    sm.color      = mdt != null && String.isNotBlank(mdt.Color__c) ? mdt.Color__c : '#706E6B';
+                    sm.sequence   = mdt != null && mdt.Sequence__c != null ? Integer.valueOf(mdt.Sequence__c) : 999;
+                    sm.count      = 0;
+                    smMap.put(sk, sm);
+                }
+                smMap.get(sk).count += cnt;
+
+                if      ('Healthy'.equalsIgnoreCase(health))  healthyLeads  += cnt;
+                else if ('At Risk'.equalsIgnoreCase(health))  atRiskLeads   += cnt;
+                else if ('Critical'.equalsIgnoreCase(health)) criticalLeads += cnt;
+            }
+
+            // Compute percentages, preserving CMT stage order
+            for (LeadTrackerDTO.StageMetric sm : smMap.values()) {
+                sm.percentage = totalLeads > 0
+                    ? (Decimal.valueOf(sm.count) / totalLeads * 100).setScale(1) : 0;
+            }
+            List<LeadTrackerDTO.StageMetric> stageMetrics = new List<LeadTrackerDTO.StageMetric>();
+            for (Pipeline_Stage__mdt mdt : allStages) {
+                if (smMap.containsKey(mdt.Stage_Key__c)) {
+                    stageMetrics.add(smMap.get(mdt.Stage_Key__c));
+                }
+            }
+            for (String sk : smMap.keySet()) {
+                if (!stageMap.containsKey(sk)) {
+                    stageMetrics.add(smMap.get(sk));
+                }
+            }
+
+            // 7. Pipeline metrics
+            List<LeadTrackerDTO.PipelineMetric> pipelineMetrics = new List<LeadTrackerDTO.PipelineMetric>();
+            for (AggregateResult row : pipelineRows) {
+                LeadTrackerDTO.PipelineMetric pm = new LeadTrackerDTO.PipelineMetric();
+                String pt = (String) row.get('pipelineType');
+                pm.pipelineType = String.isBlank(pt) ? 'Unassigned' : pt;
+                pm.count        = (Integer) row.get('cnt');
+                pm.percentage   = totalLeads > 0
+                    ? (Decimal.valueOf(pm.count) / totalLeads * 100).setScale(1) : 0;
+                pipelineMetrics.add(pm);
+            }
+
+            // 8. Average engagement score
+            Decimal avgScore = 0;
+            if (!scoreRows.isEmpty() && scoreRows[0].get('avgScore') != null) {
+                avgScore = ((Decimal) scoreRows[0].get('avgScore')).setScale(1);
+            }
+
+            // 9. Assemble DTO
+            LeadTrackerDTO.DashboardData data = new LeadTrackerDTO.DashboardData();
+            data.totalLeads         = totalLeads;
+            data.openLeads          = totalLeads;
+            data.convertedLeads     = convertedLeads;
+            data.staleLeads         = staleLeads;
+            data.healthyLeads       = healthyLeads;
+            data.atRiskLeads        = atRiskLeads;
+            data.criticalLeads      = criticalLeads;
+            data.overdueFollowUps   = overdueFollowUps;
+            data.upcomingFollowUps  = upcomingFollowUps;
+            data.activitiesThisWeek = activitiesThisWeek;
+            data.avgEngagementScore = avgScore;
+            data.conversionRate     = (convertedLeads + totalLeads) > 0
+                ? (Decimal.valueOf(convertedLeads) / (convertedLeads + totalLeads) * 100).setScale(1)
+                : 0;
+            data.stageMetrics       = stageMetrics;
+            data.pipelineMetrics    = pipelineMetrics;
+            data.refreshedAt        = String.valueOf(System.now());
+            return data;
+        } catch (Exception e) {
+            throw new AuraHandledException('Unable to load dashboard: ' + e.getMessage());
+        }
+    }
 }
