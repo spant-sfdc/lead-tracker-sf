@@ -8,6 +8,7 @@
     flex-direction: column;
     flex-shrink: 0;
     width: 272px;
+    height: 100%;
     animation: colEnter 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
