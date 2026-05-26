@@ -13,7 +13,7 @@ if (!existing.isEmpty()) {
     System.debug('Deleted ' + existing.size() + ' existing demo leads.');
 }
 
-// ── 2. Discover active pipeline stages from CMT ────────────────────────────────
+// ── 2. Discover active pipeline stages and default pipeline type from CMT ─────
 List<Pipeline_Stage__mdt> stages = [
     SELECT Stage_Key__c, Stage_Label__c, Sequence__c
     FROM   Pipeline_Stage__mdt
@@ -32,33 +32,44 @@ for (Pipeline_Stage__mdt s : stages) {
 }
 System.debug('Found stages: ' + stageKeys);
 
+List<Application_Config__mdt> configs = [
+    SELECT Default_Pipeline__c
+    FROM   Application_Config__mdt
+    WHERE  DeveloperName = 'Default'
+    LIMIT  1
+];
+String defaultPipelineType = (!configs.isEmpty() && String.isNotBlank(configs[0].Default_Pipeline__c))
+    ? configs[0].Default_Pipeline__c
+    : 'Nonprofit';
+System.debug('Default pipeline type: ' + defaultPipelineType);
+
 // ── 3. Define nonprofit lead data ──────────────────────────────────────────────
 List<Map<String,Object>> defs = new List<Map<String,Object>>{
-    new Map<String,Object>{ 'first'=>'Maya',    'last'=>'Thornton',  'company'=>'Green Future Foundation [Demo]',        'email'=>'m.thornton@greenfuture.org',     'title'=>'Executive Director',    'size'=>'51-200',   'crm'=>'Salesforce',  'pipeline'=>'Enterprise' },
-    new Map<String,Object>{ 'first'=>'Carlos',  'last'=>'Rivera',    'company'=>'United Voices Nonprofit [Demo]',         'email'=>'c.rivera@unitedvoices.org',      'title'=>'Programs Director',     'size'=>'11-50',    'crm'=>'HubSpot',     'pipeline'=>'SMB' },
-    new Map<String,Object>{ 'first'=>'Priya',   'last'=>'Sharma',    'company'=>'Education Access Alliance [Demo]',       'email'=>'p.sharma@edaccess.org',          'title'=>'Development Manager',   'size'=>'201-500',  'crm'=>'None',        'pipeline'=>'Enterprise' },
-    new Map<String,Object>{ 'first'=>'James',   'last'=>'Okafor',    'company'=>'Community Health First [Demo]',          'email'=>'j.okafor@commhealthfirst.org',   'title'=>'CEO',                   'size'=>'51-200',   'crm'=>'Zoho',        'pipeline'=>'Enterprise' },
-    new Map<String,Object>{ 'first'=>'Sofia',   'last'=>'Martinez',  'company'=>'Hope Harbor Society [Demo]',             'email'=>'s.martinez@hopeharbor.org',      'title'=>'Founder',               'size'=>'1-10',     'crm'=>'None',        'pipeline'=>'SMB' },
-    new Map<String,Object>{ 'first'=>'Liam',    'last'=>'Chen',      'company'=>'Clean Water Initiative [Demo]',          'email'=>'l.chen@cleanwater.org',          'title'=>'Operations Director',   'size'=>'11-50',    'crm'=>'Salesforce',  'pipeline'=>'SMB' },
-    new Map<String,Object>{ 'first'=>'Amara',   'last'=>'Johnson',   'company'=>'Youth Empowerment Network [Demo]',       'email'=>'a.johnson@youthempowerment.org', 'title'=>'Executive Director',    'size'=>'51-200',   'crm'=>'HubSpot',     'pipeline'=>'Enterprise' },
-    new Map<String,Object>{ 'first'=>'Noah',    'last'=>'Patel',     'company'=>'Digital Literacy Fund [Demo]',           'email'=>'n.patel@digliteracy.org',        'title'=>'Technology Director',   'size'=>'1-10',     'crm'=>'None',        'pipeline'=>'SMB' },
-    new Map<String,Object>{ 'first'=>'Elena',   'last'=>'Williams',  'company'=>'Veterans Support Coalition [Demo]',      'email'=>'e.williams@vetsupport.org',      'title'=>'Program Manager',       'size'=>'201-500',  'crm'=>'Microsoft',   'pipeline'=>'Enterprise' },
-    new Map<String,Object>{ 'first'=>'Marcus',  'last'=>'Green',     'company'=>'Arts for All Foundation [Demo]',         'email'=>'m.green@artsforall.org',         'title'=>'Managing Director',     'size'=>'11-50',    'crm'=>'Zoho',        'pipeline'=>'SMB' },
-    new Map<String,Object>{ 'first'=>'Fatima',  'last'=>'Hassan',    'company'=>'Hunger Relief Network [Demo]',           'email'=>'f.hassan@hungerrelief.org',      'title'=>'CEO',                   'size'=>'201-500',  'crm'=>'Salesforce',  'pipeline'=>'Enterprise' },
-    new Map<String,Object>{ 'first'=>'Daniel',  'last'=>'Kim',       'company'=>'Environmental Justice League [Demo]',    'email'=>'d.kim@envjustice.org',           'title'=>'Advocacy Director',     'size'=>'51-200',   'crm'=>'HubSpot',     'pipeline'=>'Enterprise' },
-    new Map<String,Object>{ 'first'=>'Aisha',   'last'=>'Thompson',  'company'=>'Global Learning Partnership [Demo]',     'email'=>'a.thompson@globallearning.org',  'title'=>'COO',                   'size'=>'501+',     'crm'=>'Salesforce',  'pipeline'=>'Enterprise' },
-    new Map<String,Object>{ 'first'=>'Ryan',    'last'=>'O\'Brien',  'company'=>'Senior Care Connect [Demo]',             'email'=>'r.obrien@seniorcare.org',        'title'=>'Executive Director',    'size'=>'51-200',   'crm'=>'None',        'pipeline'=>'SMB' },
-    new Map<String,Object>{ 'first'=>'Zara',    'last'=>'Ahmed',     'company'=>'Animal Welfare Alliance [Demo]',         'email'=>'z.ahmed@animalwelfare.org',      'title'=>'Development Director',  'size'=>'11-50',    'crm'=>'Bloomerang',  'pipeline'=>'SMB' },
-    new Map<String,Object>{ 'first'=>'Tyler',   'last'=>'Brooks',    'company'=>'Mental Health Advocates [Demo]',         'email'=>'t.brooks@mhadvocates.org',       'title'=>'Programs VP',           'size'=>'201-500',  'crm'=>'Salesforce',  'pipeline'=>'Enterprise' },
-    new Map<String,Object>{ 'first'=>'Layla',   'last'=>'Nguyen',    'company'=>'Refugee Resource Center [Demo]',         'email'=>'l.nguyen@refugeeresource.org',   'title'=>'Director',              'size'=>'51-200',   'crm'=>'HubSpot',     'pipeline'=>'Enterprise' },
-    new Map<String,Object>{ 'first'=>'Ethan',   'last'=>'Rosario',   'company'=>'Literacy Bridge International [Demo]',   'email'=>'e.rosario@literacybridge.org',   'title'=>'Founder & CEO',         'size'=>'11-50',    'crm'=>'None',        'pipeline'=>'SMB' },
-    new Map<String,Object>{ 'first'=>'Grace',   'last'=>'Liu',       'company'=>'Women in STEM Foundation [Demo]',        'email'=>'g.liu@womeninstem.org',          'title'=>'Executive Director',    'size'=>'51-200',   'crm'=>'Salesforce',  'pipeline'=>'Enterprise' },
-    new Map<String,Object>{ 'first'=>'Jordan',  'last'=>'Miller',    'company'=>'Rural Development Alliance [Demo]',      'email'=>'j.miller@ruraldevelopment.org',  'title'=>'Strategy Director',     'size'=>'11-50',    'crm'=>'Zoho',        'pipeline'=>'SMB' },
-    new Map<String,Object>{ 'first'=>'Chloe',   'last'=>'Davis',     'company'=>'Urban Gardens Initiative [Demo]',        'email'=>'c.davis@urbangardens.org',       'title'=>'Program Coordinator',   'size'=>'1-10',     'crm'=>'None',        'pipeline'=>'SMB' },
-    new Map<String,Object>{ 'first'=>'Isaiah',  'last'=>'Robinson',  'company'=>'Social Justice Collective [Demo]',       'email'=>'i.robinson@socialjustice.org',   'title'=>'Executive Director',    'size'=>'51-200',   'crm'=>'HubSpot',     'pipeline'=>'Enterprise' },
-    new Map<String,Object>{ 'first'=>'Mia',     'last'=>'Taylor',    'company'=>'Tech for Good Labs [Demo]',              'email'=>'m.taylor@techforgood.org',       'title'=>'CTO',                   'size'=>'11-50',    'crm'=>'Salesforce',  'pipeline'=>'SMB' },
-    new Map<String,Object>{ 'first'=>'Omar',    'last'=>'Farooq',    'company'=>'Mindful Schools Network [Demo]',         'email'=>'o.farooq@mindfulschools.org',    'title'=>'COO',                   'size'=>'201-500',  'crm'=>'Microsoft',   'pipeline'=>'Enterprise' },
-    new Map<String,Object>{ 'first'=>'Nadia',   'last'=>'Castillo',  'company'=>'Coastal Conservation Trust [Demo]',      'email'=>'n.castillo@coastalconserve.org', 'title'=>'Development Manager',   'size'=>'51-200',   'crm'=>'Bloomerang',  'pipeline'=>'Enterprise' }
+    new Map<String,Object>{ 'first'=>'Maya',    'last'=>'Thornton',  'company'=>'Green Future Foundation [Demo]',        'email'=>'m.thornton@greenfuture.org',     'title'=>'Executive Director',    'size'=>'51-200',   'crm'=>'Salesforce'  },
+    new Map<String,Object>{ 'first'=>'Carlos',  'last'=>'Rivera',    'company'=>'United Voices Nonprofit [Demo]',         'email'=>'c.rivera@unitedvoices.org',      'title'=>'Programs Director',     'size'=>'11-50',    'crm'=>'HubSpot'     },
+    new Map<String,Object>{ 'first'=>'Priya',   'last'=>'Sharma',    'company'=>'Education Access Alliance [Demo]',       'email'=>'p.sharma@edaccess.org',          'title'=>'Development Manager',   'size'=>'201-500',  'crm'=>'None'        },
+    new Map<String,Object>{ 'first'=>'James',   'last'=>'Okafor',    'company'=>'Community Health First [Demo]',          'email'=>'j.okafor@commhealthfirst.org',   'title'=>'CEO',                   'size'=>'51-200',   'crm'=>'Zoho'        },
+    new Map<String,Object>{ 'first'=>'Sofia',   'last'=>'Martinez',  'company'=>'Hope Harbor Society [Demo]',             'email'=>'s.martinez@hopeharbor.org',      'title'=>'Founder',               'size'=>'1-10',     'crm'=>'None'        },
+    new Map<String,Object>{ 'first'=>'Liam',    'last'=>'Chen',      'company'=>'Clean Water Initiative [Demo]',          'email'=>'l.chen@cleanwater.org',          'title'=>'Operations Director',   'size'=>'11-50',    'crm'=>'Salesforce'  },
+    new Map<String,Object>{ 'first'=>'Amara',   'last'=>'Johnson',   'company'=>'Youth Empowerment Network [Demo]',       'email'=>'a.johnson@youthempowerment.org', 'title'=>'Executive Director',    'size'=>'51-200',   'crm'=>'HubSpot'     },
+    new Map<String,Object>{ 'first'=>'Noah',    'last'=>'Patel',     'company'=>'Digital Literacy Fund [Demo]',           'email'=>'n.patel@digliteracy.org',        'title'=>'Technology Director',   'size'=>'1-10',     'crm'=>'None'        },
+    new Map<String,Object>{ 'first'=>'Elena',   'last'=>'Williams',  'company'=>'Veterans Support Coalition [Demo]',      'email'=>'e.williams@vetsupport.org',      'title'=>'Program Manager',       'size'=>'201-500',  'crm'=>'Microsoft'   },
+    new Map<String,Object>{ 'first'=>'Marcus',  'last'=>'Green',     'company'=>'Arts for All Foundation [Demo]',         'email'=>'m.green@artsforall.org',         'title'=>'Managing Director',     'size'=>'11-50',    'crm'=>'Zoho'        },
+    new Map<String,Object>{ 'first'=>'Fatima',  'last'=>'Hassan',    'company'=>'Hunger Relief Network [Demo]',           'email'=>'f.hassan@hungerrelief.org',      'title'=>'CEO',                   'size'=>'201-500',  'crm'=>'Salesforce'  },
+    new Map<String,Object>{ 'first'=>'Daniel',  'last'=>'Kim',       'company'=>'Environmental Justice League [Demo]',    'email'=>'d.kim@envjustice.org',           'title'=>'Advocacy Director',     'size'=>'51-200',   'crm'=>'HubSpot'     },
+    new Map<String,Object>{ 'first'=>'Aisha',   'last'=>'Thompson',  'company'=>'Global Learning Partnership [Demo]',     'email'=>'a.thompson@globallearning.org',  'title'=>'COO',                   'size'=>'501+',     'crm'=>'Salesforce'  },
+    new Map<String,Object>{ 'first'=>'Ryan',    'last'=>'O\'Brien',  'company'=>'Senior Care Connect [Demo]',             'email'=>'r.obrien@seniorcare.org',        'title'=>'Executive Director',    'size'=>'51-200',   'crm'=>'None'        },
+    new Map<String,Object>{ 'first'=>'Zara',    'last'=>'Ahmed',     'company'=>'Animal Welfare Alliance [Demo]',         'email'=>'z.ahmed@animalwelfare.org',      'title'=>'Development Director',  'size'=>'11-50',    'crm'=>'Bloomerang'  },
+    new Map<String,Object>{ 'first'=>'Tyler',   'last'=>'Brooks',    'company'=>'Mental Health Advocates [Demo]',         'email'=>'t.brooks@mhadvocates.org',       'title'=>'Programs VP',           'size'=>'201-500',  'crm'=>'Salesforce'  },
+    new Map<String,Object>{ 'first'=>'Layla',   'last'=>'Nguyen',    'company'=>'Refugee Resource Center [Demo]',         'email'=>'l.nguyen@refugeeresource.org',   'title'=>'Director',              'size'=>'51-200',   'crm'=>'HubSpot'     },
+    new Map<String,Object>{ 'first'=>'Ethan',   'last'=>'Rosario',   'company'=>'Literacy Bridge International [Demo]',   'email'=>'e.rosario@literacybridge.org',   'title'=>'Founder & CEO',         'size'=>'11-50',    'crm'=>'None'        },
+    new Map<String,Object>{ 'first'=>'Grace',   'last'=>'Liu',       'company'=>'Women in STEM Foundation [Demo]',        'email'=>'g.liu@womeninstem.org',          'title'=>'Executive Director',    'size'=>'51-200',   'crm'=>'Salesforce'  },
+    new Map<String,Object>{ 'first'=>'Jordan',  'last'=>'Miller',    'company'=>'Rural Development Alliance [Demo]',      'email'=>'j.miller@ruraldevelopment.org',  'title'=>'Strategy Director',     'size'=>'11-50',    'crm'=>'Zoho'        },
+    new Map<String,Object>{ 'first'=>'Chloe',   'last'=>'Davis',     'company'=>'Urban Gardens Initiative [Demo]',        'email'=>'c.davis@urbangardens.org',       'title'=>'Program Coordinator',   'size'=>'1-10',     'crm'=>'None'        },
+    new Map<String,Object>{ 'first'=>'Isaiah',  'last'=>'Robinson',  'company'=>'Social Justice Collective [Demo]',       'email'=>'i.robinson@socialjustice.org',   'title'=>'Executive Director',    'size'=>'51-200',   'crm'=>'HubSpot'     },
+    new Map<String,Object>{ 'first'=>'Mia',     'last'=>'Taylor',    'company'=>'Tech for Good Labs [Demo]',              'email'=>'m.taylor@techforgood.org',       'title'=>'CTO',                   'size'=>'11-50',    'crm'=>'Salesforce'  },
+    new Map<String,Object>{ 'first'=>'Omar',    'last'=>'Farooq',    'company'=>'Mindful Schools Network [Demo]',         'email'=>'o.farooq@mindfulschools.org',    'title'=>'COO',                   'size'=>'201-500',  'crm'=>'Microsoft'   },
+    new Map<String,Object>{ 'first'=>'Nadia',   'last'=>'Castillo',  'company'=>'Coastal Conservation Trust [Demo]',      'email'=>'n.castillo@coastalconserve.org', 'title'=>'Development Manager',   'size'=>'51-200',   'crm'=>'Bloomerang'  }
 };
 
 // Stage distribution across 25 leads
@@ -93,7 +104,7 @@ for (Integer i = 0; i < defs.size(); i++) {
     l.Email              = (String) d.get('email');
     l.Title              = (String) d.get('title');
     l.Current_Stage__c   = stageKey;
-    l.Pipeline_Type__c   = (String) d.get('pipeline');
+    l.Pipeline_Type__c   = defaultPipelineType;
     l.Engagement_Score__c= scoreValues[i];
     l.Lead_Health__c     = healthValues[i];
     l.Is_Stale__c        = staleValues[i];
