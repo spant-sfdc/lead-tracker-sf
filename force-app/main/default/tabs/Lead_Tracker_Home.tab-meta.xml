@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>TechPulse Lead Tracker Home Workspace — operational command center with KPI strip, priority leads, activity feed, upcoming tasks, and pipeline overview.</description>
     <label>Home</label>
     <lwcComponent>ltHomeWorkspace</lwcComponent>
-    <motif>Custom20: Coach</motif>
+    <motif>Custom20: Airplane</motif>
 </CustomTab>
