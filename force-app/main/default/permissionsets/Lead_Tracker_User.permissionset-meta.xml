@@ -111,7 +111,15 @@
         <readable>true</readable>
     </fieldPermissions>
     <tabSettings>
+        <tab>Lead_Tracker_Home</tab>
+        <visibility>Available</visibility>
+    </tabSettings>
+    <tabSettings>
         <tab>Lead_Tracker</tab>
+        <visibility>Available</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>Lead_Tracker_Dashboard</tab>
         <visibility>Available</visibility>
     </tabSettings>
     <tabSettings>
@@ -120,6 +128,14 @@
     </tabSettings>
     <tabSettings>
         <tab>standard-Lead</tab>
+        <visibility>Available</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>standard-Account</tab>
+        <visibility>Available</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>standard-Opportunity</tab>
         <visibility>Available</visibility>
     </tabSettings>
 </PermissionSet>
