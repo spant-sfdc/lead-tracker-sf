@@ -1,0 +1,69 @@
+<template>
+    <div class="af-panel">
+        <div class="af-header">
+            <span class="af-title">Recent Activity</span>
+            <button class="af-icon-btn" type="button" onclick={handleRefresh} title="Refresh" aria-label="Refresh">
+                <lightning-icon icon-name="utility:refresh" size="x-small" alternative-text="Refresh"></lightning-icon>
+            </button>
+        </div>
+
+        <!-- Skeleton -->
+        <template lwc:if={isLoading}>
+            <div class="af-skeleton">
+                <div class="af-sk-item"><div class="af-sk af-sk--icon"></div><div class="af-sk-body"><div class="af-sk af-sk--line"></div><div class="af-sk af-sk--meta"></div></div></div>
+                <div class="af-sk-item"><div class="af-sk af-sk--icon"></div><div class="af-sk-body"><div class="af-sk af-sk--line af-sk--short"></div><div class="af-sk af-sk--meta"></div></div></div>
+                <div class="af-sk-item"><div class="af-sk af-sk--icon"></div><div class="af-sk-body"><div class="af-sk af-sk--line"></div><div class="af-sk af-sk--meta af-sk--short"></div></div></div>
+                <div class="af-sk-item"><div class="af-sk af-sk--icon"></div><div class="af-sk-body"><div class="af-sk af-sk--line af-sk--short"></div><div class="af-sk af-sk--meta"></div></div></div>
+                <div class="af-sk-item"><div class="af-sk af-sk--icon"></div><div class="af-sk-body"><div class="af-sk af-sk--line"></div><div class="af-sk af-sk--meta"></div></div></div>
+            </div>
+        </template>
+
+        <!-- Error -->
+        <template lwc:elseif={hasError}>
+            <div class="af-state">
+                <p class="af-state-msg af-state-msg--error">{errorMessage}</p>
+                <button class="af-retry-btn" type="button" onclick={handleRefresh}>Retry</button>
+            </div>
+        </template>
+
+        <!-- Empty -->
+        <template lwc:elseif={isEmpty}>
+            <div class="af-state">
+                <lightning-icon icon-name="utility:activity" size="medium" class="af-empty-icon" alternative-text="No activity"></lightning-icon>
+                <p class="af-state-title">No recent activity</p>
+                <p class="af-state-msg">Activity will appear here as you work with leads.</p>
+            </div>
+        </template>
+
+        <!-- Feed -->
+        <template lwc:else>
+            <div class="af-feed">
+                <template for:each={groups} for:item="group">
+                    <div key={group.label} class="af-group">
+                        <p class="af-group-label">{group.label}</p>
+                        <template for:each={group.entries} for:item="entry">
+                            <div key={entry.auditId} class="af-entry">
+                                <div class="af-entry-icon" style={entry.iconStyle}>
+                                    <lightning-icon icon-name={entry.icon} size="x-small" alternative-text={entry.auditType}></lightning-icon>
+                                </div>
+                                <div class="af-entry-body">
+                                    <p class="af-entry-msg">{entry.message}</p>
+                                    <p class="af-entry-meta">
+                                        <template lwc:if={entry.leadName}>
+                                            <button class="af-lead-link"
+                                                    type="button"
+                                                    data-id={entry.leadId}
+                                                    onclick={handleLeadClick}>{entry.leadName}</button>
+                                            <span class="af-dot">·</span>
+                                        </template>
+                                        <span>{entry.relativeTime}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </div>
+</template>

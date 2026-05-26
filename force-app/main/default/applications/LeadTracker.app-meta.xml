@@ -5,8 +5,8 @@
         <logoVersion>0</logoVersion>
         <shouldOverrideOrgTheme>true</shouldOverrideOrgTheme>
     </brand>
-    <defaultLandingTab>Lead_Tracker</defaultLandingTab>
-    <description>TechPulse Lead Tracker — Metadata-driven pipeline management console for nonprofit and enterprise lead pipelines. Features a pipeline board, audit trail, and engagement scoring.</description>
+    <defaultLandingTab>Lead_Tracker_Home</defaultLandingTab>
+    <description>TechPulse Lead Tracker — Metadata-driven pipeline management console for nonprofit and enterprise lead pipelines. Features a home workspace, pipeline board, analytics dashboard, audit trail, and engagement scoring.</description>
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
@@ -14,6 +14,7 @@
     <isOmniPinnedViewEnabled>false</isOmniPinnedViewEnabled>
     <label>TechPulse Lead Tracker</label>
     <navType>Console</navType>
+    <tabs>Lead_Tracker_Home</tabs>
     <tabs>Lead_Tracker</tabs>
     <tabs>Lead_Tracker_Dashboard</tabs>
     <tabs>standard-Lead</tabs>
@@ -24,6 +25,9 @@
     <uiType>Lightning</uiType>
     <utilityBar>LeadTracker_UtilityBar</utilityBar>
     <workspaceConfig>
+        <mappings>
+            <tab>Lead_Tracker_Home</tab>
+        </mappings>
         <mappings>
             <tab>Lead_Tracker</tab>
         </mappings>

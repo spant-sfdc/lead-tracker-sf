@@ -1,0 +1,75 @@
+<template>
+    <div class="ut-panel">
+        <div class="ut-header">
+            <span class="ut-title">Upcoming Tasks</span>
+            <button class="ut-icon-btn" type="button" onclick={handleRefresh} title="Refresh" aria-label="Refresh">
+                <lightning-icon icon-name="utility:refresh" size="x-small" alternative-text="Refresh"></lightning-icon>
+            </button>
+        </div>
+
+        <!-- Skeleton -->
+        <template lwc:if={isLoading}>
+            <div class="ut-skeleton">
+                <div class="ut-sk-item"><div class="ut-sk ut-sk--icon"></div><div class="ut-sk-body"><div class="ut-sk ut-sk--line"></div><div class="ut-sk ut-sk--meta"></div></div></div>
+                <div class="ut-sk-item"><div class="ut-sk ut-sk--icon"></div><div class="ut-sk-body"><div class="ut-sk ut-sk--line ut-sk--short"></div><div class="ut-sk ut-sk--meta"></div></div></div>
+                <div class="ut-sk-item"><div class="ut-sk ut-sk--icon"></div><div class="ut-sk-body"><div class="ut-sk ut-sk--line"></div><div class="ut-sk ut-sk--meta ut-sk--short"></div></div></div>
+            </div>
+        </template>
+
+        <!-- Error -->
+        <template lwc:elseif={hasError}>
+            <div class="ut-state">
+                <p class="ut-state-msg ut-state-msg--error">{errorMessage}</p>
+                <button class="ut-retry-btn" type="button" onclick={handleRefresh}>Retry</button>
+            </div>
+        </template>
+
+        <!-- Empty -->
+        <template lwc:elseif={isEmpty}>
+            <div class="ut-state">
+                <lightning-icon icon-name="utility:task" size="medium" class="ut-empty-icon" alternative-text="No tasks"></lightning-icon>
+                <p class="ut-state-title">No upcoming tasks</p>
+                <p class="ut-state-msg">You're all clear for the next 7 days.</p>
+            </div>
+        </template>
+
+        <!-- Groups -->
+        <template lwc:else>
+            <div class="ut-list">
+                <template for:each={groups} for:item="group">
+                    <div key={group.label}>
+                        <p class="ut-group-label">{group.label}</p>
+                        <template for:each={group.tasks} for:item="task">
+                            <div key={task.taskId} class={task.itemClass}>
+                                <div class="ut-task-icon">
+                                    <lightning-icon icon-name={task.typeIcon} size="x-small" alternative-text={task.type}></lightning-icon>
+                                </div>
+                                <div class="ut-task-body">
+                                    <p class="ut-task-subject">{task.subject}</p>
+                                    <p class="ut-task-meta">
+                                        <template lwc:if={task.leadName}>
+                                            <button class="ut-lead-link"
+                                                    type="button"
+                                                    data-id={task.leadId}
+                                                    onclick={handleLeadClick}>{task.leadName}</button>
+                                            <span class="ut-dot">·</span>
+                                        </template>
+                                        <span>{task.dueDateLabel}</span>
+                                    </p>
+                                </div>
+                                <button class="ut-complete-btn"
+                                        type="button"
+                                        data-id={task.taskId}
+                                        onclick={handleComplete}
+                                        title="Mark complete"
+                                        aria-label="Mark complete">
+                                    <lightning-icon icon-name="utility:check" size="x-small" alternative-text="Complete"></lightning-icon>
+                                </button>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </div>
+</template>

@@ -1,0 +1,86 @@
+<template>
+    <div class="hw-shell">
+
+        <!-- ── App Header ──────────────────────────────────────────────── -->
+        <header class="hw-header">
+            <div class="hw-brand">
+                <div class="hw-brand-icon">
+                    <lightning-icon icon-name="standard:lead" size="small" alternative-text="Lead Tracker"></lightning-icon>
+                </div>
+                <div class="hw-brand-text">
+                    <span class="hw-brand-name">{appName}</span>
+                    <span class="hw-brand-sub">Pipeline Command Center</span>
+                </div>
+            </div>
+
+            <div class="hw-header-search">
+                <lightning-icon icon-name="utility:search" size="x-small" class="hw-search-icon" alternative-text="Search"></lightning-icon>
+                <input class="hw-search-input"
+                       type="search"
+                       placeholder="Search leads…"
+                       value={searchTerm}
+                       oninput={handleSearch}
+                       aria-label="Search leads" />
+            </div>
+
+            <div class="hw-header-actions">
+                <span class="hw-refresh-ts">{refreshedAt}</span>
+                <button class="hw-icon-btn" type="button" onclick={handleRefresh} title="Refresh all" aria-label="Refresh all">
+                    <lightning-icon icon-name="utility:refresh" size="x-small" alternative-text="Refresh"></lightning-icon>
+                </button>
+                <button class="hw-create-btn" type="button" onclick={handleCreateLead}>
+                    <lightning-icon icon-name="utility:add" size="x-small" alternative-text="Create"></lightning-icon>
+                    <span>New Lead</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- ── KPI Strip ───────────────────────────────────────────────── -->
+        <section class="hw-kpi-strip">
+            <template lwc:if={isKpiLoading}>
+                <div class="hw-kpi-grid">
+                    <div class="hw-sk hw-sk--kpi"></div>
+                    <div class="hw-sk hw-sk--kpi"></div>
+                    <div class="hw-sk hw-sk--kpi"></div>
+                    <div class="hw-sk hw-sk--kpi"></div>
+                    <div class="hw-sk hw-sk--kpi"></div>
+                    <div class="hw-sk hw-sk--kpi"></div>
+                </div>
+            </template>
+            <template lwc:else>
+                <div class="hw-kpi-grid">
+                    <c-lt-metric-card value={kpi.openLeads}     label="Open Leads"       icon="utility:leads"     variant="default"></c-lt-metric-card>
+                    <c-lt-metric-card value={kpi.staleLeads}    label="Stale Leads"      icon="utility:warning"   variant={staleVariant}></c-lt-metric-card>
+                    <c-lt-metric-card value={kpi.conversionPct} label="Conversion Rate"  icon="utility:chart"     variant="success" sublabel="of all leads"></c-lt-metric-card>
+                    <c-lt-metric-card value={kpi.overdueFollowUps} label="Overdue Follow-Ups" icon="utility:date_time" variant={overdueVariant}></c-lt-metric-card>
+                    <c-lt-metric-card value={kpi.activitiesThisWeek} label="Activities This Week" icon="utility:activity" variant="default"></c-lt-metric-card>
+                    <c-lt-metric-card value={kpi.avgScore}      label="Avg Engagement"   icon="utility:metrics"   variant="default" sublabel="out of 100"></c-lt-metric-card>
+                </div>
+            </template>
+        </section>
+
+        <!-- ── Main Content ────────────────────────────────────────────── -->
+        <div class="hw-main">
+
+            <!-- Left column -->
+            <div class="hw-col-main">
+                <c-lt-priority-leads-panel onleadopen={handleLeadOpen}></c-lt-priority-leads-panel>
+                <c-lt-recent-activity-feed onleadopen={handleLeadOpen}></c-lt-recent-activity-feed>
+            </div>
+
+            <!-- Right column -->
+            <div class="hw-col-side">
+                <c-lt-pipeline-overview
+                    stage-metrics={dashboardData.stageMetrics}
+                    total-leads={dashboardData.totalLeads}
+                    healthy-leads={dashboardData.healthyLeads}
+                    at-risk-leads={dashboardData.atRiskLeads}
+                    critical-leads={dashboardData.criticalLeads}
+                    conversion-rate={dashboardData.conversionRate}>
+                </c-lt-pipeline-overview>
+                <c-lt-upcoming-tasks onleadopen={handleLeadOpen}></c-lt-upcoming-tasks>
+            </div>
+        </div>
+
+    </div>
+</template>

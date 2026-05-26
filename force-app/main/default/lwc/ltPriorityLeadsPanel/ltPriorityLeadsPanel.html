@@ -1,0 +1,76 @@
+<template>
+    <div class="pl-panel">
+        <div class="pl-header">
+            <span class="pl-title">Needs Attention</span>
+            <button class="pl-icon-btn" type="button" onclick={handleRefresh} title="Refresh" aria-label="Refresh">
+                <lightning-icon icon-name="utility:refresh" size="x-small" alternative-text="Refresh"></lightning-icon>
+            </button>
+        </div>
+
+        <!-- Skeleton -->
+        <template lwc:if={isLoading}>
+            <div class="pl-skeleton">
+                <div class="pl-sk-item"><span class="pl-sk pl-sk--bar"></span><div class="pl-sk-body"><div class="pl-sk pl-sk--name"></div><div class="pl-sk pl-sk--meta"></div></div></div>
+                <div class="pl-sk-item"><span class="pl-sk pl-sk--bar"></span><div class="pl-sk-body"><div class="pl-sk pl-sk--name"></div><div class="pl-sk pl-sk--meta pl-sk--short"></div></div></div>
+                <div class="pl-sk-item"><span class="pl-sk pl-sk--bar"></span><div class="pl-sk-body"><div class="pl-sk pl-sk--name"></div><div class="pl-sk pl-sk--meta"></div></div></div>
+                <div class="pl-sk-item"><span class="pl-sk pl-sk--bar"></span><div class="pl-sk-body"><div class="pl-sk pl-sk--name"></div><div class="pl-sk pl-sk--meta pl-sk--short"></div></div></div>
+            </div>
+        </template>
+
+        <!-- Error -->
+        <template lwc:elseif={hasError}>
+            <div class="pl-state">
+                <p class="pl-state-msg pl-state-msg--error">{errorMessage}</p>
+                <button class="pl-retry-btn" type="button" onclick={handleRefresh}>Retry</button>
+            </div>
+        </template>
+
+        <!-- Empty -->
+        <template lwc:elseif={isEmpty}>
+            <div class="pl-state">
+                <lightning-icon icon-name="utility:check" size="medium" class="pl-empty-icon" alternative-text="All clear"></lightning-icon>
+                <p class="pl-state-title">All caught up!</p>
+                <p class="pl-state-msg">No stale or critical leads right now.</p>
+            </div>
+        </template>
+
+        <!-- List -->
+        <template lwc:else>
+            <ul class="pl-list">
+                <template for:each={leads} for:item="lead">
+                    <li key={lead.leadId}
+                        class="pl-item"
+                        data-id={lead.leadId}
+                        onclick={handleLeadClick}
+                        onkeydown={handleLeadKeyDown}
+                        role="button"
+                        tabindex="0"
+                        aria-label={lead.name}>
+                        <span class="pl-health-bar" style={lead.healthBarStyle}></span>
+                        <div class="pl-item-body">
+                            <p class="pl-item-name">{lead.name}</p>
+                            <p class="pl-item-meta">
+                                <span>{lead.company}</span>
+                                <template lwc:if={lead.currentStage}>
+                                    <span class="pl-dot">·</span>
+                                    <span>{lead.currentStage}</span>
+                                </template>
+                            </p>
+                        </div>
+                        <div class="pl-badges">
+                            <template lwc:if={lead.isStale}>
+                                <span class="pl-badge pl-badge--stale">Stale</span>
+                            </template>
+                            <template lwc:if={lead.isCritical}>
+                                <span class="pl-badge pl-badge--critical">Critical</span>
+                            </template>
+                            <template lwc:if={lead.isOverdue}>
+                                <span class="pl-badge pl-badge--overdue">Overdue</span>
+                            </template>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+        </template>
+    </div>
+</template>

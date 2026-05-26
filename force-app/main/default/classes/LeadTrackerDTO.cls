@@ -85,7 +85,7 @@ public class LeadTrackerDTO {
 
     // ── Audit / Timeline ──────────────────────────────────────────────────────
 
-    /** Single audit entry for the lead timeline component. */
+    /** Single audit entry for the lead timeline and global activity feed. */
     public class AuditEntry {
         @AuraEnabled public Id     auditId     { get; set; }
         @AuraEnabled public String auditType   { get; set; }
@@ -94,6 +94,9 @@ public class LeadTrackerDTO {
         @AuraEnabled public String newValue    { get; set; }
         @AuraEnabled public String performedBy { get; set; }
         @AuraEnabled public String performedOn { get; set; }
+        // Populated for global feed (null when used in per-lead timeline)
+        @AuraEnabled public Id     leadId      { get; set; }
+        @AuraEnabled public String leadName    { get; set; }
     }
 
     // ── Stage Move ────────────────────────────────────────────────────────────
@@ -195,6 +198,25 @@ public class LeadTrackerDTO {
         public PipelineMetric() {
             count      = 0;
             percentage = 0;
+        }
+    }
+
+    // ── Home Workspace ────────────────────────────────────────────────────────
+
+    /** Upcoming or overdue task with lead context for the home workspace task panel. */
+    public class UpcomingTaskItem {
+        @AuraEnabled public Id      taskId       { get; set; }
+        @AuraEnabled public Id      leadId       { get; set; }
+        @AuraEnabled public String  leadName     { get; set; }
+        @AuraEnabled public String  subject      { get; set; }
+        @AuraEnabled public String  type         { get; set; }
+        @AuraEnabled public String  activityDate { get; set; }
+        @AuraEnabled public Boolean isOverdue    { get; set; }
+        @AuraEnabled public Boolean isDueToday   { get; set; }
+
+        public UpcomingTaskItem() {
+            isOverdue  = false;
+            isDueToday = false;
         }
     }
 }

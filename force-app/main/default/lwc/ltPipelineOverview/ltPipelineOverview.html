@@ -1,0 +1,54 @@
+<template>
+    <div class="po-panel">
+        <div class="po-header">
+            <span class="po-title">Pipeline Snapshot</span>
+            <template lwc:if={conversionRate}>
+                <span class="po-conv-badge">{conversionRate}% converted</span>
+            </template>
+        </div>
+
+        <template lwc:if={hasMetrics}>
+            <!-- Stage bars -->
+            <div class="po-stage-list">
+                <template for:each={enrichedMetrics} for:item="m">
+                    <div key={m.stageKey} class="po-stage-row">
+                        <span class="po-stage-label" title={m.stageLabel}>{m.stageLabel}</span>
+                        <div class="po-bar-track">
+                            <div class="po-bar-fill" style={m.barStyle}></div>
+                        </div>
+                        <span class="po-stage-count">{m.count}</span>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Health strip -->
+            <div class="po-health-section">
+                <div class="po-health-bar-wrap">
+                    <div class="po-health-fill po-health-fill--healthy" style={healthyBarStyle} title={healthyLabel}></div>
+                    <div class="po-health-fill po-health-fill--at-risk" style={atRiskBarStyle} title={atRiskLabel}></div>
+                    <div class="po-health-fill po-health-fill--critical" style={criticalBarStyle} title={criticalLabel}></div>
+                </div>
+                <div class="po-health-legend">
+                    <span class="po-legend-item">
+                        <span class="po-legend-dot po-legend-dot--healthy"></span>
+                        <span>{healthyLeads} Healthy</span>
+                    </span>
+                    <span class="po-legend-item">
+                        <span class="po-legend-dot po-legend-dot--at-risk"></span>
+                        <span>{atRiskLeads} At Risk</span>
+                    </span>
+                    <span class="po-legend-item">
+                        <span class="po-legend-dot po-legend-dot--critical"></span>
+                        <span>{criticalLeads} Critical</span>
+                    </span>
+                </div>
+            </div>
+        </template>
+
+        <template lwc:else>
+            <div class="po-empty">
+                <p class="po-empty-msg">No pipeline data available.</p>
+            </div>
+        </template>
+    </div>
+</template>
