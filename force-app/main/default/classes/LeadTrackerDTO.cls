@@ -210,6 +210,7 @@ public class LeadTrackerDTO {
         @AuraEnabled public String  leadName     { get; set; }
         @AuraEnabled public String  subject      { get; set; }
         @AuraEnabled public String  type         { get; set; }
+        @AuraEnabled public String  priority     { get; set; }
         @AuraEnabled public String  activityDate { get; set; }
         @AuraEnabled public Boolean isOverdue    { get; set; }
         @AuraEnabled public Boolean isDueToday   { get; set; }

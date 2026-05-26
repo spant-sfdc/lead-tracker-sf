@@ -173,7 +173,7 @@ public with sharing class LeadController {
     public static List<Task> getLeadTasks(Id leadId) {
         try {
             if (leadId == null) throw new LeadTrackerException('leadId is required.');
-            return [SELECT Id, Subject, Description, Status, ActivityDate, Type,
+            return [SELECT Id, Subject, Description, Status, ActivityDate,
                            CreatedDate, Owner.Name
                     FROM Task WHERE WhoId = :leadId WITH USER_MODE
                     ORDER BY CreatedDate DESC LIMIT 50];
@@ -196,8 +196,7 @@ public with sharing class LeadController {
                 WhoId       = leadId,
                 Subject     = subject,
                 Description = description,
-                Status      = 'Completed',
-                Type        = String.isBlank(type) ? 'Other' : type
+                Status      = 'Completed'
             );
             if (String.isNotBlank(activityDate)) {
                 t.ActivityDate = Date.valueOf(activityDate);
@@ -325,7 +324,7 @@ public with sharing class LeadController {
             Date today   = Date.today();
             Date cutoff  = today.addDays(7);
             List<Task> tasks = [
-                SELECT Id, Subject, Type, Status, ActivityDate, WhoId, Who.Name
+                SELECT Id, Subject, Status, Priority, ActivityDate, WhoId, Who.Name
                 FROM   Task
                 WHERE  Status != 'Completed'
                 AND    WhoId  != null
@@ -341,7 +340,8 @@ public with sharing class LeadController {
                 item.leadId       = t.WhoId;
                 item.leadName     = t.Who != null ? t.Who.Name : null;
                 item.subject      = t.Subject;
-                item.type         = t.Type;
+                item.type         = deriveTaskType(t.Subject);
+                item.priority     = t.Priority;
                 item.activityDate = t.ActivityDate != null ? String.valueOf(t.ActivityDate) : null;
                 item.isOverdue    = t.ActivityDate != null && t.ActivityDate < today;
                 item.isDueToday   = t.ActivityDate != null && t.ActivityDate == today;
@@ -353,6 +353,16 @@ public with sharing class LeadController {
         } catch (Exception e) {
             throw new AuraHandledException('Unable to load upcoming tasks: ' + e.getMessage());
         }
+    }
+
+    /** Derives a display type (Call / Email / Meeting) from task Subject keywords. */
+    private static String deriveTaskType(String subject) {
+        if (String.isBlank(subject)) return null;
+        String s = subject.toLowerCase();
+        if (s.contains('call')) return 'Call';
+        if (s.contains('email') || s.contains('send')) return 'Email';
+        if (s.contains('meeting') || s.contains('review')) return 'Meeting';
+        return null;
     }
 
     /** Marks a single Task as Completed. Called by the home workspace task panel. */

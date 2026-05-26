@@ -11,6 +11,15 @@ const TYPE_ICON = {
     Other:   { icon: 'utility:task',  color: '#706E6B' }
 };
 
+function deriveType(subject) {
+    if (!subject) return 'Other';
+    const s = subject.toLowerCase();
+    if (s.includes('call')) return 'Call';
+    if (s.includes('email') || s.includes('send')) return 'Email';
+    if (s.includes('meeting') || s.includes('review')) return 'Meeting';
+    return 'Other';
+}
+
 export default class LtLeadActivitiesPanel extends LightningElement {
     @track tasks = [];
     @track isLoading = false;
@@ -44,7 +53,7 @@ export default class LtLeadActivitiesPanel extends LightningElement {
         try {
             const raw = await getLeadTasks({ leadId: this._leadId });
             this.tasks = (raw || []).map(t => {
-                const cfg = TYPE_ICON[t.Type] || TYPE_ICON.Other;
+                const cfg = TYPE_ICON[deriveType(t.Subject)];
                 return {
                     ...t,
                     typeIcon:    cfg.icon,
