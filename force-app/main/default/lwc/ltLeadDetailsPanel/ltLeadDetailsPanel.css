@@ -1,0 +1,31 @@
+:host { display: block; }
+
+.dp-panel {
+    padding: 0.875rem 1rem 1.5rem;
+}
+
+.dp-section {
+    margin-bottom: 0.25rem;
+}
+
+.dp-section-title {
+    font-size: 0.625rem;
+    font-weight: 700;
+    color: var(--lt-text-secondary, #706E6B);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin: 0 0 0.5rem;
+    padding-top: 0.875rem;
+}
+
+.dp-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.dp-divider {
+    height: 1px;
+    background: var(--lt-border-color, #E3E7EE);
+    margin: 0.25rem 0;
+}

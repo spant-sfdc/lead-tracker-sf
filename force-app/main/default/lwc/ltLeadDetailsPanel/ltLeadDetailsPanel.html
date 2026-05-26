@@ -1,0 +1,55 @@
+<template>
+    <div class="dp-panel">
+        <lightning-record-view-form record-id={leadId} object-api-name="Lead">
+            <div class="dp-section">
+                <h3 class="dp-section-title">Contact</h3>
+                <div class="dp-fields">
+                    <lightning-output-field field-name="Name"></lightning-output-field>
+                    <lightning-output-field field-name="Company"></lightning-output-field>
+                    <lightning-output-field field-name="Email"></lightning-output-field>
+                    <lightning-output-field field-name="Phone"></lightning-output-field>
+                    <lightning-output-field field-name="Title"></lightning-output-field>
+                </div>
+            </div>
+            <div class="dp-divider"></div>
+            <div class="dp-section">
+                <h3 class="dp-section-title">Pipeline</h3>
+                <div class="dp-fields">
+                    <lightning-output-field field-name="Current_Stage__c"></lightning-output-field>
+                    <lightning-output-field field-name="Pipeline_Type__c"></lightning-output-field>
+                    <lightning-output-field field-name="Lead_Health__c"></lightning-output-field>
+                    <lightning-output-field field-name="Engagement_Score__c"></lightning-output-field>
+                    <lightning-output-field field-name="Is_Stale__c"></lightning-output-field>
+                </div>
+            </div>
+            <div class="dp-divider"></div>
+            <div class="dp-section">
+                <h3 class="dp-section-title">Follow-up</h3>
+                <div class="dp-fields">
+                    <lightning-output-field field-name="Last_Activity_Date__c"></lightning-output-field>
+                    <lightning-output-field field-name="Next_Follow_Up__c"></lightning-output-field>
+                </div>
+            </div>
+            <div class="dp-divider"></div>
+            <div class="dp-section">
+                <h3 class="dp-section-title">Qualification</h3>
+                <div class="dp-fields">
+                    <lightning-output-field field-name="Organization_Size__c"></lightning-output-field>
+                    <lightning-output-field field-name="Funding_Model__c"></lightning-output-field>
+                    <lightning-output-field field-name="Current_CRM__c"></lightning-output-field>
+                    <lightning-output-field field-name="Primary_Stakeholder__c"></lightning-output-field>
+                </div>
+            </div>
+            <div class="dp-divider"></div>
+            <div class="dp-section">
+                <h3 class="dp-section-title">Lead Info</h3>
+                <div class="dp-fields">
+                    <lightning-output-field field-name="LeadSource"></lightning-output-field>
+                    <lightning-output-field field-name="Status"></lightning-output-field>
+                    <lightning-output-field field-name="OwnerId"></lightning-output-field>
+                    <lightning-output-field field-name="Closed_Reason__c"></lightning-output-field>
+                </div>
+            </div>
+        </lightning-record-view-form>
+    </div>
+</template>

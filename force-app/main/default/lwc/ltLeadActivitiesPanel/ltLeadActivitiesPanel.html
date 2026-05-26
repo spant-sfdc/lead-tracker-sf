@@ -1,0 +1,108 @@
+<template>
+    <div class="ap-panel">
+
+        <!-- Log activity form -->
+        <details class="ap-log-form" ontoggle={handleFormToggle}>
+            <summary class="ap-log-toggle">
+                <lightning-icon icon-name="utility:add" size="x-small" alternative-text="Log"></lightning-icon>
+                <span>Log Activity</span>
+            </summary>
+            <div class="ap-form-body">
+                <div class="ap-field">
+                    <label class="ap-label" for="ap-subject">Subject *</label>
+                    <input id="ap-subject"
+                           class="ap-input"
+                           type="text"
+                           placeholder="Call with stakeholder..."
+                           oninput={handleSubjectInput} />
+                </div>
+                <div class="ap-field-row">
+                    <div class="ap-field">
+                        <label class="ap-label" for="ap-type">Type</label>
+                        <select id="ap-type" class="ap-select" onchange={handleTypeChange}>
+                            <option value="Call">Call</option>
+                            <option value="Email">Email</option>
+                            <option value="Meeting">Meeting</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="ap-field">
+                        <label class="ap-label" for="ap-date">Date</label>
+                        <input id="ap-date"
+                               class="ap-input"
+                               type="date"
+                               onchange={handleDateChange} />
+                    </div>
+                </div>
+                <div class="ap-field">
+                    <label class="ap-label" for="ap-desc">Notes</label>
+                    <textarea id="ap-desc"
+                              class="ap-textarea"
+                              rows="2"
+                              placeholder="Optional details..."
+                              oninput={handleDescInput}></textarea>
+                </div>
+                <div class="ap-form-footer">
+                    <button class="ap-cancel-btn" type="button" onclick={handleFormCancel}>Cancel</button>
+                    <button class="ap-save-btn"
+                            type="button"
+                            disabled={isSaveDisabled}
+                            onclick={handleLogActivity}>
+                        <template lwc:if={isSaving}>Saving...</template>
+                        <template lwc:else>Log Activity</template>
+                    </button>
+                </div>
+            </div>
+        </details>
+
+        <!-- List states -->
+        <template lwc:if={isLoading}>
+            <div class="ap-loading">
+                <lightning-spinner alternative-text="Loading activities..." size="small"></lightning-spinner>
+            </div>
+        </template>
+
+        <template lwc:elseif={hasError}>
+            <div class="ap-state">
+                <p class="ap-state-msg ap-state-msg--error">{errorMessage}</p>
+                <button class="ap-retry-btn" type="button" onclick={loadTasks}>Retry</button>
+            </div>
+        </template>
+
+        <template lwc:elseif={isEmpty}>
+            <div class="ap-state">
+                <lightning-icon icon-name="utility:task" size="medium" class="ap-empty-icon" alternative-text="No activities"></lightning-icon>
+                <p class="ap-state-title">No activities logged</p>
+                <p class="ap-state-msg">Use Log Activity above to track interactions.</p>
+            </div>
+        </template>
+
+        <template lwc:else>
+            <ul class="ap-list">
+                <template for:each={tasks} for:item="task">
+                    <li key={task.Id} class="ap-item">
+                        <div class="ap-item-icon" style={task.typeStyle}>
+                            <lightning-icon icon-name={task.typeIcon} size="x-small" alternative-text={task.Type}></lightning-icon>
+                        </div>
+                        <div class="ap-item-body">
+                            <p class="ap-item-subject">{task.Subject}</p>
+                            <template lwc:if={task.Description}>
+                                <p class="ap-item-desc">{task.Description}</p>
+                            </template>
+                            <p class="ap-item-meta">
+                                <span class="ap-item-type">{task.Type}</span>
+                                <span class="ap-dot">·</span>
+                                <span class="ap-item-time">{task.relativeTime}</span>
+                                <template lwc:if={task.ownerName}>
+                                    <span class="ap-dot">·</span>
+                                    <span class="ap-item-owner">{task.ownerName}</span>
+                                </template>
+                            </p>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+        </template>
+
+    </div>
+</template>

@@ -1,0 +1,63 @@
+<template>
+    <div class="np-panel">
+
+        <!-- Compose note -->
+        <div class="np-compose">
+            <textarea class="np-textarea"
+                      placeholder="Add a note..."
+                      rows="3"
+                      oninput={handleInput}
+                      aria-label="Note body"></textarea>
+            <div class="np-compose-footer">
+                <button class="np-submit-btn"
+                        type="button"
+                        disabled={isSubmitDisabled}
+                        onclick={handleAddNote}>
+                    <template lwc:if={isSaving}>Saving...</template>
+                    <template lwc:else>Add Note</template>
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <template lwc:if={isLoading}>
+            <div class="np-loading">
+                <lightning-spinner alternative-text="Loading notes..." size="small"></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- Error -->
+        <template lwc:elseif={hasError}>
+            <div class="np-state">
+                <p class="np-state-msg np-state-msg--error">{errorMessage}</p>
+                <button class="np-retry-btn" type="button" onclick={handleLoad}>Retry</button>
+            </div>
+        </template>
+
+        <!-- Empty -->
+        <template lwc:elseif={isEmpty}>
+            <div class="np-state">
+                <lightning-icon icon-name="utility:note" size="medium" class="np-empty-icon" alternative-text="No notes"></lightning-icon>
+                <p class="np-state-title">No notes yet</p>
+                <p class="np-state-msg">Add a note above to capture context.</p>
+            </div>
+        </template>
+
+        <!-- Notes list -->
+        <template lwc:else>
+            <ul class="np-list">
+                <template for:each={notes} for:item="note">
+                    <li key={note.Id} class="np-note">
+                        <div class="np-note-header">
+                            <span class="np-note-title">{note.Title}</span>
+                            <span class="np-note-time">{note.relativeTime}</span>
+                        </div>
+                        <p class="np-note-body">{note.Body}</p>
+                        <p class="np-note-author">{note.ownerName}</p>
+                    </li>
+                </template>
+            </ul>
+        </template>
+
+    </div>
+</template>

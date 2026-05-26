@@ -1,15 +1,16 @@
 import { LightningElement, track } from 'lwc';
-import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getBoardData from '@salesforce/apex/LeadController.getBoardData';
 import moveLead from '@salesforce/apex/LeadController.moveLead';
 import setLeadStale from '@salesforce/apex/LeadController.setLeadStale';
 
-export default class LtPipelineWorkspace extends NavigationMixin(LightningElement) {
+export default class LtPipelineWorkspace extends LightningElement {
     @track boardData = null;
     @track isLoading = true;
     @track errorMessage = '';
     @track _filterCriteria = { searchTerm: '', healthFilter: [], showStaleOnly: false };
+    @track selectedLeadId = null;
+    @track selectedCard   = null;
 
     // ── Lifecycle ─────────────────────────────────────────────────────────────
 
@@ -100,10 +101,13 @@ export default class LtPipelineWorkspace extends NavigationMixin(LightningElemen
 
     handleLeadSelect(event) {
         const { leadId } = event.detail;
-        this[NavigationMixin.Navigate]({
-            type: 'standard__recordPage',
-            attributes: { recordId: leadId, objectApiName: 'Lead', actionName: 'view' }
-        });
+        this.selectedLeadId = leadId;
+        this.selectedCard   = this._findCard(leadId);
+    }
+
+    handleDrawerClose() {
+        this.selectedLeadId = null;
+        this.selectedCard   = null;
     }
 
     // ── Stage move (optimistic) ───────────────────────────────────────────────
@@ -137,6 +141,15 @@ export default class LtPipelineWorkspace extends NavigationMixin(LightningElemen
     }
 
     // ── Board mutation helpers ────────────────────────────────────────────────
+
+    _findCard(leadId) {
+        if (!this.boardData || !this.boardData.stages) return {};
+        for (const col of this.boardData.stages) {
+            const card = (col.leads || []).find(c => c.leadId === leadId);
+            if (card) return card;
+        }
+        return {};
+    }
 
     _cloneBoard() {
         return JSON.parse(JSON.stringify(this.boardData));

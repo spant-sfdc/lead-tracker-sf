@@ -23,6 +23,15 @@
         <div class="pw-main">
             <c-lt-filter-sidebar onfilterchange={handleFilterChange}></c-lt-filter-sidebar>
 
+            <!-- Lead drawer — slides over the board, positioned inside pw-main -->
+            <template lwc:if={selectedLeadId}>
+                <c-lt-lead-drawer
+                    lead-id={selectedLeadId}
+                    card={selectedCard}
+                    ondrawerclose={handleDrawerClose}>
+                </c-lt-lead-drawer>
+            </template>
+
             <div class="pw-board-area">
                 <!-- Loading -->
                 <template lwc:if={isLoading}>

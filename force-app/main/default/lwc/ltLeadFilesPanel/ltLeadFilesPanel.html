@@ -1,0 +1,74 @@
+<template>
+    <div class="fp-panel">
+
+        <!-- Upload zone -->
+        <div class="fp-upload-zone">
+            <lightning-file-upload
+                label="Attach Files"
+                name="fileUploader"
+                accept={acceptedFormats}
+                record-id={leadId}
+                multiple
+                onuploadfinished={handleUploadFinished}>
+            </lightning-file-upload>
+        </div>
+
+        <!-- Loading -->
+        <template lwc:if={isLoading}>
+            <div class="fp-loading">
+                <lightning-spinner alternative-text="Loading files..." size="small"></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- Error -->
+        <template lwc:elseif={hasError}>
+            <div class="fp-state">
+                <p class="fp-state-msg fp-state-msg--error">{errorMessage}</p>
+                <button class="fp-retry-btn" type="button" onclick={loadFiles}>Retry</button>
+            </div>
+        </template>
+
+        <!-- Empty -->
+        <template lwc:elseif={isEmpty}>
+            <div class="fp-state">
+                <lightning-icon icon-name="utility:file" size="medium" class="fp-empty-icon" alternative-text="No files"></lightning-icon>
+                <p class="fp-state-title">No files attached</p>
+                <p class="fp-state-msg">Upload files using the button above.</p>
+            </div>
+        </template>
+
+        <!-- File list -->
+        <template lwc:else>
+            <p class="fp-count">{fileCount} file(s) attached</p>
+            <ul class="fp-list">
+                <template for:each={files} for:item="file">
+                    <li key={file.id} class="fp-item">
+                        <div class="fp-file-icon" style={file.iconStyle}>
+                            <lightning-icon icon-name={file.icon} size="small" alternative-text={file.ext}></lightning-icon>
+                        </div>
+                        <div class="fp-file-info">
+                            <p class="fp-file-name" title={file.title}>{file.title}</p>
+                            <p class="fp-file-meta">
+                                <span>{file.formattedSize}</span>
+                                <span class="fp-dot">·</span>
+                                <span>{file.relativeTime}</span>
+                                <template lwc:if={file.ownerName}>
+                                    <span class="fp-dot">·</span>
+                                    <span>{file.ownerName}</span>
+                                </template>
+                            </p>
+                        </div>
+                        <a class="fp-download-btn"
+                           href={file.downloadUrl}
+                           target="_blank"
+                           rel="noopener"
+                           title="Download">
+                            <lightning-icon icon-name="utility:download" size="x-small" alternative-text="Download"></lightning-icon>
+                        </a>
+                    </li>
+                </template>
+            </ul>
+        </template>
+
+    </div>
+</template>

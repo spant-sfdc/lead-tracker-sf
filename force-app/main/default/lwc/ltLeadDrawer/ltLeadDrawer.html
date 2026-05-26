@@ -1,0 +1,68 @@
+<template>
+    <!-- Backdrop -->
+    <div class="ld-backdrop" onclick={handleClose} role="presentation"></div>
+
+    <!-- Drawer panel -->
+    <div class="ld-panel" role="complementary" aria-label="Lead Details">
+
+        <!-- Header -->
+        <div class="ld-header">
+            <div class="ld-lead-info">
+                <span class="ld-company">{leadCompany}</span>
+                <span class="ld-name">{leadName}</span>
+            </div>
+            <div class="ld-header-btns">
+                <button class="ld-icon-btn" type="button" title="Open full record" onclick={handleOpenRecord}>
+                    <lightning-icon icon-name="utility:new_window" size="x-small" alternative-text="Open full record"></lightning-icon>
+                </button>
+                <button class="ld-icon-btn" type="button" title="Close panel" onclick={handleClose}>
+                    <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close"></lightning-icon>
+                </button>
+            </div>
+        </div>
+
+        <!-- Lead health + stage badge -->
+        <div class="ld-pills">
+            <template lwc:if={leadHealth}>
+                <span class={healthClass}>{leadHealth}</span>
+            </template>
+            <template lwc:if={isStale}>
+                <span class="ld-pill ld-pill--stale">Stale</span>
+            </template>
+        </div>
+
+        <!-- Tab bar -->
+        <nav class="ld-tabs" role="tablist">
+            <template for:each={tabs} for:item="tab">
+                <button key={tab.id}
+                        class={tab.cssClass}
+                        type="button"
+                        role="tab"
+                        data-tab={tab.id}
+                        onclick={handleTabClick}
+                        aria-selected={tab.isActive}>
+                    {tab.label}
+                </button>
+            </template>
+        </nav>
+
+        <!-- Tab content -->
+        <div class="ld-content">
+            <template lwc:if={isTimeline}>
+                <c-lt-activity-timeline lead-id={leadId}></c-lt-activity-timeline>
+            </template>
+            <template lwc:if={isDetails}>
+                <c-lt-lead-details-panel lead-id={leadId}></c-lt-lead-details-panel>
+            </template>
+            <template lwc:if={isActivities}>
+                <c-lt-lead-activities-panel lead-id={leadId}></c-lt-lead-activities-panel>
+            </template>
+            <template lwc:if={isNotes}>
+                <c-lt-lead-notes-panel lead-id={leadId}></c-lt-lead-notes-panel>
+            </template>
+            <template lwc:if={isFiles}>
+                <c-lt-lead-files-panel lead-id={leadId}></c-lt-lead-files-panel>
+            </template>
+        </div>
+    </div>
+</template>

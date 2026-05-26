@@ -1,0 +1,83 @@
+<template>
+    <div class="at-timeline">
+
+        <!-- Loading -->
+        <template lwc:if={isLoading}>
+            <div class="at-loading">
+                <div class="at-skeleton-item"></div>
+                <div class="at-skeleton-item at-skeleton-item--short"></div>
+                <div class="at-skeleton-item"></div>
+                <div class="at-skeleton-item at-skeleton-item--short"></div>
+                <div class="at-skeleton-item"></div>
+            </div>
+        </template>
+
+        <!-- Error -->
+        <template lwc:elseif={hasError}>
+            <div class="at-state-container">
+                <lightning-icon icon-name="utility:error" size="small" variant="error" alternative-text="Error"></lightning-icon>
+                <p class="at-state-msg">{errorMessage}</p>
+                <button class="at-retry-btn" type="button" onclick={handleRetry}>Retry</button>
+            </div>
+        </template>
+
+        <!-- Empty -->
+        <template lwc:elseif={isEmpty}>
+            <div class="at-state-container">
+                <lightning-icon icon-name="utility:activity" size="medium" class="at-empty-icon" alternative-text="No activity"></lightning-icon>
+                <p class="at-state-title">No activity yet</p>
+                <p class="at-state-msg">Stage changes and audit events will appear here.</p>
+            </div>
+        </template>
+
+        <!-- Timeline groups -->
+        <template lwc:else>
+            <div class="at-refresh-row">
+                <span class="at-count">{entryCount} events</span>
+                <button class="at-refresh-btn" type="button" onclick={handleRetry} title="Refresh timeline">
+                    <lightning-icon icon-name="utility:refresh" size="x-small" alternative-text="Refresh"></lightning-icon>
+                </button>
+            </div>
+
+            <template for:each={groupedEntries} for:item="group">
+                <div key={group.label} class="at-group">
+                    <div class="at-group-label">{group.label}</div>
+                    <ul class="at-list">
+                        <template for:each={group.entries} for:item="entry">
+                            <li key={entry.auditId} class="at-item">
+                                <div class="at-icon-col">
+                                    <div class="at-icon-wrap" style={entry.iconStyle}>
+                                        <lightning-icon
+                                            icon-name={entry.icon}
+                                            size="x-small"
+                                            alternative-text={entry.auditType}>
+                                        </lightning-icon>
+                                    </div>
+                                    <div class="at-connector"></div>
+                                </div>
+                                <div class="at-body">
+                                    <p class="at-message">{entry.message}</p>
+                                    <template lwc:if={entry.hasValues}>
+                                        <p class="at-values">
+                                            <template lwc:if={entry.oldValue}>
+                                                <span class="at-val at-val--old">{entry.oldValue}</span>
+                                                <span class="at-arrow"> → </span>
+                                            </template>
+                                            <span class="at-val at-val--new">{entry.newValue}</span>
+                                        </p>
+                                    </template>
+                                    <p class="at-meta">
+                                        <span class="at-who">{entry.performedBy}</span>
+                                        <span class="at-dot">·</span>
+                                        <span class="at-when" title={entry.performedOn}>{entry.relativeTime}</span>
+                                    </p>
+                                </div>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </template>
+        </template>
+
+    </div>
+</template>

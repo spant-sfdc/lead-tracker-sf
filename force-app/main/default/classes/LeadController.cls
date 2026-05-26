@@ -165,4 +165,102 @@ public with sharing class LeadController {
             throw new AuraHandledException('Unable to load activity: ' + e.getMessage());
         }
     }
+
+    // ── Drawer: Tasks / Notes / Files ─────────────────────────────────────────
+
+    /** Returns Task records for the lead activity panel. */
+    @AuraEnabled
+    public static List<Task> getLeadTasks(Id leadId) {
+        try {
+            if (leadId == null) throw new LeadTrackerException('leadId is required.');
+            return [SELECT Id, Subject, Description, Status, ActivityDate, Type,
+                           CreatedDate, Owner.Name
+                    FROM Task WHERE WhoId = :leadId WITH USER_MODE
+                    ORDER BY CreatedDate DESC LIMIT 50];
+        } catch (AuraHandledException ahe) {
+            throw ahe;
+        } catch (Exception e) {
+            throw new AuraHandledException('Unable to load tasks: ' + e.getMessage());
+        }
+    }
+
+    /** Creates a completed Task (activity log) for the lead. Returns new Task Id. */
+    @AuraEnabled
+    public static Id logActivity(Id leadId, String subject, String description,
+                                  String type, String activityDate) {
+        try {
+            if (leadId == null || String.isBlank(subject)) {
+                throw new LeadTrackerException('leadId and subject are required.');
+            }
+            Task t = new Task(
+                WhoId       = leadId,
+                Subject     = subject,
+                Description = description,
+                Status      = 'Completed',
+                Type        = String.isBlank(type) ? 'Other' : type
+            );
+            if (String.isNotBlank(activityDate)) {
+                t.ActivityDate = Date.valueOf(activityDate);
+            }
+            insert t;
+            return t.Id;
+        } catch (AuraHandledException ahe) {
+            throw ahe;
+        } catch (Exception e) {
+            throw new AuraHandledException('Unable to log activity: ' + e.getMessage());
+        }
+    }
+
+    /** Returns Note records attached to the lead. */
+    @AuraEnabled
+    public static List<Note> getLeadNotes(Id leadId) {
+        try {
+            if (leadId == null) throw new LeadTrackerException('leadId is required.');
+            return [SELECT Id, Title, Body, CreatedDate, Owner.Name
+                    FROM Note WHERE ParentId = :leadId WITH USER_MODE
+                    ORDER BY CreatedDate DESC LIMIT 50];
+        } catch (AuraHandledException ahe) {
+            throw ahe;
+        } catch (Exception e) {
+            throw new AuraHandledException('Unable to load notes: ' + e.getMessage());
+        }
+    }
+
+    /** Creates a Note attached to the lead. Returns new Note Id. */
+    @AuraEnabled
+    public static Id addNote(Id leadId, String title, String body) {
+        try {
+            if (leadId == null || String.isBlank(body)) {
+                throw new LeadTrackerException('leadId and body are required.');
+            }
+            Note n = new Note(
+                ParentId = leadId,
+                Title    = String.isBlank(title) ? 'Note' : title,
+                Body     = body
+            );
+            insert n;
+            return n.Id;
+        } catch (AuraHandledException ahe) {
+            throw ahe;
+        } catch (Exception e) {
+            throw new AuraHandledException('Unable to add note: ' + e.getMessage());
+        }
+    }
+
+    /** Returns ContentDocumentLink records for the lead (file attachments). */
+    @AuraEnabled
+    public static List<ContentDocumentLink> getLeadFiles(Id leadId) {
+        try {
+            if (leadId == null) throw new LeadTrackerException('leadId is required.');
+            return [SELECT ContentDocument.Id, ContentDocument.Title,
+                           ContentDocument.FileExtension, ContentDocument.ContentSize,
+                           ContentDocument.CreatedDate, ContentDocument.Owner.Name
+                    FROM ContentDocumentLink WHERE LinkedEntityId = :leadId WITH USER_MODE
+                    ORDER BY ContentDocument.CreatedDate DESC LIMIT 50];
+        } catch (AuraHandledException ahe) {
+            throw ahe;
+        } catch (Exception e) {
+            throw new AuraHandledException('Unable to load files: ' + e.getMessage());
+        }
+    }
 }
