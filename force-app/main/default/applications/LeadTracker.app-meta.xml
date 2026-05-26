@@ -8,7 +8,7 @@
     <description>TechPulse Lead Tracker — Metadata-driven pipeline management console for nonprofit and enterprise lead pipelines. Features a home workspace, pipeline board, analytics dashboard, audit trail, and engagement scoring.</description>
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
-    <isNavPersonalizationDisabled>true</isNavPersonalizationDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
     <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
     <isOmniPinnedViewEnabled>false</isOmniPinnedViewEnabled>
     <label>TechPulse Lead Tracker</label>
