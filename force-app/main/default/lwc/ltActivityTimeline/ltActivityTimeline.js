@@ -1,5 +1,5 @@
 import { LightningElement, api, track } from 'lwc';
-import { formatDate } from 'c/ltBase';
+import { formatDate, relativeTime } from 'c/ltBase';
 import getLeadTimeline from '@salesforce/apex/LeadController.getLeadTimeline';
 
 const TYPE_CONFIG = {
@@ -48,24 +48,11 @@ export default class LtActivityTimeline extends LightningElement {
         const cfg = TYPE_CONFIG[e.auditType] || DEFAULT_CONFIG;
         return {
             ...e,
-            icon:       cfg.icon,
-            iconStyle:  `background-color: ${cfg.color}1A; color: ${cfg.color}`,
-            relativeTime: this._relativeTime(e.performedOn),
-            hasValues:  !!(e.oldValue || e.newValue)
+            icon:        cfg.icon,
+            iconStyle:   `background-color: ${cfg.color}1A; color: ${cfg.color}`,
+            relativeTime: relativeTime(e.performedOn),
+            hasValues:   !!(e.oldValue || e.newValue)
         };
-    }
-
-    _relativeTime(dateString) {
-        if (!dateString) return '';
-        const ms = Date.now() - new Date(dateString).getTime();
-        const mins = Math.floor(ms / 60000);
-        if (mins < 1)  return 'just now';
-        if (mins < 60) return `${mins}m ago`;
-        const hrs = Math.floor(mins / 60);
-        if (hrs  < 24) return `${hrs}h ago`;
-        const days = Math.floor(hrs / 24);
-        if (days < 7)  return `${days}d ago`;
-        return formatDate(dateString);
     }
 
     // ── Computed ──────────────────────────────────────────────────────────────

@@ -38,6 +38,10 @@ export default class LtPipelineWorkspace extends LightningElement {
         return !this.isLoading && !!this.errorMessage;
     }
 
+    get skeletonCols() {
+        return [1, 2, 3, 4];
+    }
+
     get stageOptions() {
         if (!this.boardData || !this.boardData.stages) return [];
         return this.boardData.stages.map(col => ({

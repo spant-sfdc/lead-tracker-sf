@@ -23,6 +23,15 @@ export default class LtQuickActions extends LightningElement {
         return !!(this.card && this.card.isStale);
     }
 
+    handleItemKeyDown(event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            event.currentTarget.click();
+        } else if (event.key === 'Escape') {
+            this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
+        }
+    }
+
     handleStageMove(event) {
         this._emit('move', { stageKey: event.currentTarget.dataset.key });
     }

@@ -13,10 +13,30 @@
             </lightning-file-upload>
         </div>
 
-        <!-- Loading -->
+        <!-- Loading: skeleton -->
         <template lwc:if={isLoading}>
-            <div class="fp-loading">
-                <lightning-spinner alternative-text="Loading files..." size="small"></lightning-spinner>
+            <div class="fp-skeleton">
+                <div class="fp-sk-item">
+                    <div class="fp-sk fp-sk--icon"></div>
+                    <div class="fp-sk-body">
+                        <div class="fp-sk fp-sk--name"></div>
+                        <div class="fp-sk fp-sk--meta"></div>
+                    </div>
+                </div>
+                <div class="fp-sk-item">
+                    <div class="fp-sk fp-sk--icon"></div>
+                    <div class="fp-sk-body">
+                        <div class="fp-sk fp-sk--name"></div>
+                        <div class="fp-sk fp-sk--meta fp-sk--short"></div>
+                    </div>
+                </div>
+                <div class="fp-sk-item">
+                    <div class="fp-sk fp-sk--icon"></div>
+                    <div class="fp-sk-body">
+                        <div class="fp-sk fp-sk--name"></div>
+                        <div class="fp-sk fp-sk--meta"></div>
+                    </div>
+                </div>
             </div>
         </template>
 

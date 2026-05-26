@@ -64,6 +64,12 @@ export default class LtLeadCard extends LightningElement {
         return this.card && this.card.badges && this.card.badges.length > 0;
     }
 
+    get cardAriaLabel() {
+        const name    = this.card?.name    || '';
+        const company = this.card?.company || '';
+        return company ? `${name} at ${company}` : name;
+    }
+
     // ── Drag & Drop ───────────────────────────────────────────────────────────
 
     handleDragStart(event) {
@@ -89,6 +95,15 @@ export default class LtLeadCard extends LightningElement {
                 detail: { leadId: this.card.leadId }
             })
         );
+    }
+
+    handleKeyDown(event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            this.handleCardClick();
+        } else if (event.key === 'Escape') {
+            this.showActions = false;
+        }
     }
 
     handleActionToggle(event) {

@@ -1,7 +1,8 @@
 import { LightningElement, api, track } from 'lwc';
-import { formatDate } from 'c/ltBase';
+import { relativeTime } from 'c/ltBase';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getLeadNotes from '@salesforce/apex/LeadController.getLeadNotes';
-import addNote     from '@salesforce/apex/LeadController.addNote';
+import addNote      from '@salesforce/apex/LeadController.addNote';
 
 export default class LtLeadNotesPanel extends LightningElement {
     @track notes = [];
@@ -35,7 +36,7 @@ export default class LtLeadNotesPanel extends LightningElement {
             this.notes = (raw || []).map(n => ({
                 ...n,
                 ownerName:    n.Owner?.Name || '',
-                relativeTime: this._relativeTime(n.CreatedDate)
+                relativeTime: relativeTime(n.CreatedDate)
             }));
         } catch (e) {
             this.errorMessage = e.body?.message || 'Failed to load notes.';
@@ -59,26 +60,13 @@ export default class LtLeadNotesPanel extends LightningElement {
             this.draftBody = '';
             const textarea = this.template.querySelector('.np-textarea');
             if (textarea) textarea.value = '';
+            this.dispatchEvent(new ShowToastEvent({ title: 'Note Saved', message: 'Your note has been added.', variant: 'success' }));
             await this.handleLoad();
         } catch (e) {
             this.errorMessage = e.body?.message || 'Failed to save note.';
+            this.dispatchEvent(new ShowToastEvent({ title: 'Error', message: this.errorMessage, variant: 'error' }));
         } finally {
             this.isSaving = false;
         }
-    }
-
-    // ── Utility ───────────────────────────────────────────────────────────────
-
-    _relativeTime(dateString) {
-        if (!dateString) return '';
-        const ms   = Date.now() - new Date(dateString).getTime();
-        const mins = Math.floor(ms / 60000);
-        if (mins < 1)  return 'just now';
-        if (mins < 60) return `${mins}m ago`;
-        const hrs = Math.floor(mins / 60);
-        if (hrs  < 24) return `${hrs}h ago`;
-        const days = Math.floor(hrs / 24);
-        if (days < 7)  return `${days}d ago`;
-        return formatDate(dateString);
     }
 }

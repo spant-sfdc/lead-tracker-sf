@@ -7,8 +7,10 @@
                     <li key={opt.stageKey}
                         class="qa-item"
                         role="menuitem"
+                        tabindex="0"
                         data-key={opt.stageKey}
-                        onclick={handleStageMove}>
+                        onclick={handleStageMove}
+                        onkeydown={handleItemKeyDown}>
                         <span class="qa-dot" style={opt.dotStyle}></span>
                         <span class="qa-label">{opt.stageLabel}</span>
                     </li>
@@ -18,12 +20,12 @@
         </template>
         <ul class="qa-list">
             <template lwc:if={isStale}>
-                <li class="qa-item qa-item--accent" role="menuitem" onclick={handleClearStale}>
+                <li class="qa-item qa-item--accent" role="menuitem" tabindex="0" onclick={handleClearStale} onkeydown={handleItemKeyDown}>
                     Clear Stale Flag
                 </li>
             </template>
             <template lwc:else>
-                <li class="qa-item" role="menuitem" onclick={handleMarkStale}>
+                <li class="qa-item" role="menuitem" tabindex="0" onclick={handleMarkStale} onkeydown={handleItemKeyDown}>
                     Mark as Stale
                 </li>
             </template>

@@ -68,12 +68,34 @@
     opacity: 0.85;
 }
 
-/* Loading */
-.np-loading {
-    display: flex;
-    justify-content: center;
-    padding: 1.5rem;
+/* Skeleton */
+@keyframes npShimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position:  200% 0; }
 }
+
+.np-skeleton { display: flex; flex-direction: column; gap: 0.625rem; }
+
+.np-sk-item {
+    background: var(--lt-bg-workspace, #F4F5F8);
+    border: 1px solid var(--lt-border-color, #E3E7EE);
+    border-radius: 8px;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.np-sk {
+    background: linear-gradient(90deg, #E3E7EE 25%, #F4F5F8 50%, #E3E7EE 75%);
+    background-size: 200% 100%;
+    animation: npShimmer 1.5s ease-in-out infinite;
+    border-radius: 4px;
+}
+
+.np-sk--title  { height: 12px; width: 40%; }
+.np-sk--line   { height: 10px; }
+.np-sk--short  { width: 65%; }
 
 /* State */
 .np-state {

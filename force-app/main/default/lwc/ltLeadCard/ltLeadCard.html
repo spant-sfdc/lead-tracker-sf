@@ -1,9 +1,13 @@
 <template>
     <article class={cardClass}
              draggable="true"
+             tabindex="0"
+             role="article"
+             aria-label={cardAriaLabel}
              ondragstart={handleDragStart}
              ondragend={handleDragEnd}
-             onclick={handleCardClick}>
+             onclick={handleCardClick}
+             onkeydown={handleKeyDown}>
 
         <template lwc:if={card.isStale}>
             <div class="lc-stale-ribbon">Stale</div>
@@ -18,8 +22,11 @@
             <button class="lc-action-btn"
                     type="button"
                     title="Actions"
+                    aria-label="Lead actions"
+                    aria-expanded={showActions}
+                    aria-haspopup="menu"
                     onclick={handleActionToggle}>
-                <lightning-icon icon-name="utility:overflow" size="x-small"></lightning-icon>
+                <lightning-icon icon-name="utility:overflow" size="x-small" alternative-text="Actions"></lightning-icon>
             </button>
         </div>
 

@@ -334,6 +334,27 @@
 .db-stat-item--activity  .db-stat-num { color: var(--lt-health-healthy); }
 .db-stat-item--converted .db-stat-num { color: var(--lt-health-healthy); }
 
+/* ── Skeleton ──────────────────────────────────────────────────────────────── */
+@keyframes dbShimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position:  200% 0; }
+}
+
+.db-sk {
+    background: linear-gradient(
+        90deg,
+        var(--lt-border-color, #E3E7EE) 25%,
+        #F4F5F8 50%,
+        var(--lt-border-color, #E3E7EE) 75%
+    );
+    background-size: 200% 100%;
+    animation: dbShimmer 1.5s ease-in-out infinite;
+    border-radius: 10px;
+}
+
+.db-sk--kpi   { height: 82px; }
+.db-sk--chart { height: 220px; }
+
 /* Empty state */
 .db-empty-msg {
     font-size: 0.875rem;

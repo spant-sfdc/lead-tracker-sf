@@ -33,11 +33,18 @@
             </template>
 
             <div class="pw-board-area">
-                <!-- Loading -->
+                <!-- Loading: shimmer skeleton board -->
                 <template lwc:if={isLoading}>
-                    <div class="pw-state-container">
-                        <lightning-spinner alternative-text="Loading pipeline..." size="medium"></lightning-spinner>
-                        <p class="pw-state-msg">Loading pipeline...</p>
+                    <div class="pw-skeleton-board">
+                        <template for:each={skeletonCols} for:item="col">
+                            <div key={col} class="pw-sk-col">
+                                <div class="pw-sk pw-sk--header"></div>
+                                <div class="pw-sk pw-sk--card"></div>
+                                <div class="pw-sk pw-sk--card pw-sk--card-sm"></div>
+                                <div class="pw-sk pw-sk--card"></div>
+                                <div class="pw-sk pw-sk--card pw-sk--card-sm"></div>
+                            </div>
+                        </template>
                     </div>
                 </template>
 

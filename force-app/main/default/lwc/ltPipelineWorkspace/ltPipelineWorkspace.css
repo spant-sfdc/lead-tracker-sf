@@ -128,3 +128,52 @@
 .pw-retry-btn:hover {
     opacity: 0.85;
 }
+
+/* ── Skeleton board ──────────────────────────────────────────────────────── */
+.pw-skeleton-board {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
+    height: 100%;
+    padding: 0 1.5rem 1rem;
+    overflow-x: hidden;
+}
+
+.pw-sk-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    flex-shrink: 0;
+    width: 272px;
+}
+
+@keyframes pwShimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position:  200% 0; }
+}
+
+.pw-sk {
+    background: linear-gradient(
+        90deg,
+        var(--lt-border-color, #E3E7EE) 25%,
+        #F4F5F8 50%,
+        var(--lt-border-color, #E3E7EE) 75%
+    );
+    background-size: 200% 100%;
+    animation: pwShimmer 1.5s ease-in-out infinite;
+    border-radius: 8px;
+}
+
+.pw-sk--header {
+    height: 36px;
+    border-radius: 8px;
+}
+
+.pw-sk--card {
+    height: 112px;
+    border-radius: 10px;
+}
+
+.pw-sk--card-sm {
+    height: 80px;
+}

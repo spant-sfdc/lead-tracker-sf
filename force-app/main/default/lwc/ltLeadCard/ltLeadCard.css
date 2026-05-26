@@ -1,6 +1,12 @@
 :host {
     display: block;
     position: relative;
+    animation: lcEnter 0.18s ease both;
+}
+
+@keyframes lcEnter {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
 .lc-card {
@@ -20,6 +26,12 @@
     box-shadow: var(--lt-shadow-hover, 0 4px 12px rgba(22, 33, 62, 0.1));
     transform: translateY(-1px);
     border-color: #C8D0DC;
+}
+
+.lc-card:focus-visible {
+    outline: 2px solid var(--lt-accent, #1B3A6B);
+    outline-offset: 2px;
+    box-shadow: var(--lt-shadow-hover, 0 4px 12px rgba(22, 33, 62, 0.1));
 }
 
 .lc-card--dragging {

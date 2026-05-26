@@ -1,5 +1,6 @@
 import { LightningElement, api, track } from 'lwc';
-import { formatDate } from 'c/ltBase';
+import { relativeTime } from 'c/ltBase';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getLeadTasks   from '@salesforce/apex/LeadController.getLeadTasks';
 import logActivity    from '@salesforce/apex/LeadController.logActivity';
 
@@ -49,7 +50,7 @@ export default class LtLeadActivitiesPanel extends LightningElement {
                     typeIcon:    cfg.icon,
                     typeStyle:   `background-color: ${cfg.color}1A; color: ${cfg.color}`,
                     ownerName:   t.Owner?.Name || '',
-                    relativeTime: this._relativeTime(t.CreatedDate)
+                    relativeTime: relativeTime(t.CreatedDate)
                 };
             });
         } catch (e) {
@@ -77,10 +78,11 @@ export default class LtLeadActivitiesPanel extends LightningElement {
     async handleLogActivity() {
         if (!this._subject.trim()) return;
         this.isSaving = true;
+        const subjectLabel = this._subject.trim();
         try {
             await logActivity({
                 leadId:       this._leadId,
-                subject:      this._subject.trim(),
+                subject:      subjectLabel,
                 description:  this._description,
                 type:         this._type,
                 activityDate: this._date || null
@@ -88,9 +90,11 @@ export default class LtLeadActivitiesPanel extends LightningElement {
             this._resetForm();
             const details = this.template.querySelector('.ap-log-form');
             if (details) details.removeAttribute('open');
+            this.dispatchEvent(new ShowToastEvent({ title: 'Activity Logged', message: `"${subjectLabel}" recorded successfully.`, variant: 'success' }));
             await this.loadTasks();
         } catch (e) {
             this.errorMessage = e.body?.message || 'Failed to log activity.';
+            this.dispatchEvent(new ShowToastEvent({ title: 'Error', message: this.errorMessage, variant: 'error' }));
         } finally {
             this.isSaving = false;
         }
@@ -106,16 +110,4 @@ export default class LtLeadActivitiesPanel extends LightningElement {
         if (sel) sel.value = 'Call';
     }
 
-    _relativeTime(dateString) {
-        if (!dateString) return '';
-        const ms   = Date.now() - new Date(dateString).getTime();
-        const mins = Math.floor(ms / 60000);
-        if (mins < 1)  return 'just now';
-        if (mins < 60) return `${mins}m ago`;
-        const hrs = Math.floor(mins / 60);
-        if (hrs  < 24) return `${hrs}h ago`;
-        const days = Math.floor(hrs / 24);
-        if (days < 7)  return `${days}d ago`;
-        return formatDate(dateString);
-    }
 }

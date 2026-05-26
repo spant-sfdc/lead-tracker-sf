@@ -17,11 +17,25 @@
             </button>
         </div>
 
-        <!-- Loading -->
+        <!-- Loading: shimmer skeleton -->
         <template lwc:if={isLoading}>
-            <div class="db-state-container">
-                <lightning-spinner alternative-text="Loading analytics..." size="medium"></lightning-spinner>
-                <p class="db-state-msg">Loading analytics...</p>
+            <div class="db-content">
+                <div class="db-kpi-grid">
+                    <div class="db-sk db-sk--kpi"></div>
+                    <div class="db-sk db-sk--kpi"></div>
+                    <div class="db-sk db-sk--kpi"></div>
+                    <div class="db-sk db-sk--kpi"></div>
+                    <div class="db-sk db-sk--kpi"></div>
+                    <div class="db-sk db-sk--kpi"></div>
+                </div>
+                <div class="db-chart-grid">
+                    <div class="db-sk db-sk--chart"></div>
+                    <div class="db-sk db-sk--chart"></div>
+                </div>
+                <div class="db-chart-grid">
+                    <div class="db-sk db-sk--chart"></div>
+                    <div class="db-sk db-sk--chart"></div>
+                </div>
             </div>
         </template>
 

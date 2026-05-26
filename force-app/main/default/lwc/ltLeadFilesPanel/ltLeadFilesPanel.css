@@ -19,12 +19,37 @@
     border-color: var(--lt-accent, #1B3A6B);
 }
 
-/* Loading */
-.fp-loading {
-    display: flex;
-    justify-content: center;
-    padding: 1.5rem;
+/* Skeleton */
+@keyframes fpShimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position:  200% 0; }
 }
+
+.fp-skeleton { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.fp-sk-item {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.625rem 0.75rem;
+    background: var(--lt-bg-workspace, #F4F5F8);
+    border: 1px solid var(--lt-border-color, #E3E7EE);
+    border-radius: 8px;
+}
+
+.fp-sk-body { flex: 1; display: flex; flex-direction: column; gap: 0.35rem; }
+
+.fp-sk {
+    background: linear-gradient(90deg, #E3E7EE 25%, #F4F5F8 50%, #E3E7EE 75%);
+    background-size: 200% 100%;
+    animation: fpShimmer 1.5s ease-in-out infinite;
+    border-radius: 4px;
+}
+
+.fp-sk--icon  { width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0; }
+.fp-sk--name  { height: 11px; width: 60%; }
+.fp-sk--meta  { height: 9px; }
+.fp-sk--short { width: 45%; }
 
 /* States */
 .fp-state {

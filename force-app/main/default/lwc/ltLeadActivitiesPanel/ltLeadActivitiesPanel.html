@@ -55,10 +55,30 @@
             </div>
         </details>
 
-        <!-- List states -->
+        <!-- Loading: skeleton -->
         <template lwc:if={isLoading}>
-            <div class="ap-loading">
-                <lightning-spinner alternative-text="Loading activities..." size="small"></lightning-spinner>
+            <div class="ap-skeleton">
+                <div class="ap-sk-item">
+                    <div class="ap-sk ap-sk--icon"></div>
+                    <div class="ap-sk-body">
+                        <div class="ap-sk ap-sk--title"></div>
+                        <div class="ap-sk ap-sk--line ap-sk--short"></div>
+                    </div>
+                </div>
+                <div class="ap-sk-item">
+                    <div class="ap-sk ap-sk--icon"></div>
+                    <div class="ap-sk-body">
+                        <div class="ap-sk ap-sk--title"></div>
+                        <div class="ap-sk ap-sk--line"></div>
+                    </div>
+                </div>
+                <div class="ap-sk-item">
+                    <div class="ap-sk ap-sk--icon"></div>
+                    <div class="ap-sk-body">
+                        <div class="ap-sk ap-sk--title"></div>
+                        <div class="ap-sk ap-sk--line ap-sk--short"></div>
+                    </div>
+                </div>
             </div>
         </template>
 

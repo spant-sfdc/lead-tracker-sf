@@ -1,159 +1,78 @@
 # Lead Tracker
 
-A modern, enterprise-grade Salesforce application for pipeline management. Built natively on the Salesforce Platform with a metadata-driven architecture, console-first UX, and a clean service-layer pattern designed for future AppExchange packaging.
+A modern, production-grade Salesforce pipeline management app built natively on the Salesforce Platform. Features a metadata-driven kanban board, full lead detail drawer, inline activities/notes/files, and a live analytics dashboard — all built with Lightning Web Components and a clean service-layer Apex architecture.
 
 ---
 
-## Overview
+## Features
 
-Lead Tracker replaces manual pipeline management with a SaaS-like kanban board experience running entirely within Salesforce. Every aspect of the pipeline — stages, colors, icons, and branding — is controlled through Custom Metadata Types with zero hardcoding.
+| Feature | Description |
+|---------|-------------|
+| **Kanban Pipeline Board** | Drag-and-drop lead management across configurable pipeline stages |
+| **Metadata-Driven Stages** | Every stage (label, color, icon, order) is a Custom Metadata record — zero hardcoding |
+| **Lead Detail Drawer** | Slide-in panel with inline editable fields, health score, and engagement tracking |
+| **Activity Log** | Log calls, emails, meetings, and other interactions directly from the board |
+| **Notes Panel** | Freeform notes attached to each lead |
+| **Files Panel** | Upload and download lead attachments (Salesforce ContentDocument) |
+| **Activity Timeline** | Unified timeline view across tasks, notes, and lead history |
+| **Pipeline Analytics Dashboard** | KPI cards, stage funnel, health breakdown, engagement score, follow-up indicators |
+| **Shimmer Skeleton Loaders** | Native loading states for all panels and the board |
+| **Toast Notifications** | Success and error toasts on all user actions |
+| **Keyboard Accessibility** | Enter/Space/Escape on all interactive elements; focus management; `:focus-visible` rings |
+| **Entrance Animations** | Smooth card and column mount animations |
 
 ---
 
-## Architecture
-
-### Design Principles
-
-| Principle | Implementation |
-|-----------|----------------|
-| Metadata-Driven | Custom Metadata Types control all pipeline stages, colors, icons, and app config |
-| Service-Layer Pattern | Selector → Service → Controller → LWC layered architecture |
-| Zero Hardcoding | No hardcoded stages, colors, or icons anywhere in code |
-| One Trigger Per Object | Single `LeadTrigger` with `LeadTriggerHandler` routing all events |
-| No SOQL in Loops | All queries centralized in `LeadTrackerSelector` |
-| Console-First UI | Salesforce Console app with Lightning Web Components |
-| SLDS-Compliant | All components use SLDS design tokens and patterns |
-| Enterprise-Grade Tests | All Apex classes covered by dedicated `_Test` classes |
-
-### Layer Architecture
+## Architecture Overview
 
 ```
-┌─────────────────────────────────────────────────────┐
-│                   LWC UI Layer                       │
-│  ltPipelineBoard │ ltLeadCard │ ltAppHeader          │
-│  ltBase (utilities/constants)                        │
-└──────────────────────┬──────────────────────────────┘
-                       │  @AuraEnabled
-┌──────────────────────▼──────────────────────────────┐
-│               Controller Layer                       │
-│               LeadTrackerController                  │
-└──────────────────────┬──────────────────────────────┘
-                       │
-┌──────────────────────▼──────────────────────────────┐
-│                Service Layer                         │
-│                LeadTrackerService                    │
-└──────────────────────┬──────────────────────────────┘
-                       │
-┌──────────────────────▼──────────────────────────────┐
-│               Selector Layer                         │
-│               LeadTrackerSelector                    │
-└──────────────────────┬──────────────────────────────┘
-                       │  SOQL (USER_MODE)
-┌──────────────────────▼──────────────────────────────┐
-│             Salesforce Platform                      │
-│   Lead (Standard Object) │ Custom Metadata Types     │
-└─────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                          LWC UI Layer                           │
+│  ltPipelineWorkspace  ltKanbanBoard  ltKanbanColumn  ltLeadCard  │
+│  ltLeadDrawer  ltLeadDetailsPanel  ltLeadNotesPanel             │
+│  ltLeadActivitiesPanel  ltLeadFilesPanel  ltActivityTimeline     │
+│  ltDashboard  ltMetricCard  ltFilterSidebar  ltQuickActions      │
+│  ltAppHeader  ltBase (shared utilities)                          │
+└──────────────────────────────┬──────────────────────────────────┘
+                               │  @AuraEnabled
+┌──────────────────────────────▼──────────────────────────────────┐
+│                       Controller Layer                           │
+│         LeadController  LeadTrackerController                    │
+│         LeadAuditService  LeadSelector                           │
+└──────────────────────────────┬──────────────────────────────────┘
+                               │
+┌──────────────────────────────▼──────────────────────────────────┐
+│                        Service Layer                             │
+│         LeadTrackerService  LeadService  LeadAuditService        │
+└──────────────────────────────┬──────────────────────────────────┘
+                               │
+┌──────────────────────────────▼──────────────────────────────────┐
+│                       Selector Layer                             │
+│         LeadTrackerSelector  LeadSelector  LeadAuditSelector     │
+└──────────────────────────────┬──────────────────────────────────┘
+                               │  SOQL WITH USER_MODE
+┌──────────────────────────────▼──────────────────────────────────┐
+│                     Salesforce Platform                          │
+│   Lead (Standard)  Lead_Audit__c (Custom)  CMT Types             │
+└─────────────────────────────────────────────────────────────────┘
 ```
+
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for a full component map and data flow.
 
 ---
 
-## Custom Metadata Types
-
-### `LeadTracker_Pipeline_Stage__mdt`
-
-Drives pipeline board columns. Every stage is a CMT record — never hardcoded.
-
-| Field | Type | Purpose |
-|-------|------|---------|
-| `Stage_Name__c` | Text(255) | Maps to `Lead.Status` picklist value |
-| `Sort_Order__c` | Number(3,0) | Column position on the pipeline board |
-| `Icon_Name__c` | Text(100) | SLDS icon name (e.g., `standard:lead`) |
-| `Color_Hex__c` | Text(7) | Column accent color in `#RRGGBB` format |
-| `Is_Closed__c` | Checkbox | Marks this as a terminal/closed stage |
-| `Is_Won__c` | Checkbox | Marks this as a won outcome stage |
-| `Is_Active__c` | Checkbox | Enables/disables the stage on the board |
-| `Description__c` | Text Area(500) | Human-readable stage description |
-
-### `LeadTracker_App_Config__mdt`
-
-Controls global application behavior and branding. Use Developer Name `Default` for org-wide settings.
-
-| Field | Type | Purpose |
-|-------|------|---------|
-| `App_Name__c` | Text(100) | Application display name |
-| `Primary_Color__c` | Text(7) | Primary brand color (`#RRGGBB`) |
-| `Secondary_Color__c` | Text(7) | Secondary brand color (`#RRGGBB`) |
-| `Logo_Static_Resource__c` | Text(100) | Static resource name for the logo asset |
-| `Support_Email__c` | Email | Support contact email |
-| `Default_Tab__c` | Text(80) | Default landing tab API name |
-
----
-
-## Project Structure
-
-```
-lead-tracker-sf/
-├── force-app/main/default/
-│   ├── applications/
-│   │   └── LeadTracker.app-meta.xml              # Console app definition
-│   ├── classes/
-│   │   ├── LeadTrackerException.cls               # Custom exception type
-│   │   ├── LeadTrackerSelector.cls                # SOQL data access layer
-│   │   ├── LeadTrackerSelector_Test.cls
-│   │   ├── LeadTrackerService.cls                 # Business logic layer
-│   │   ├── LeadTrackerService_Test.cls
-│   │   ├── LeadTrackerController.cls              # @AuraEnabled LWC controller
-│   │   ├── LeadTrackerController_Test.cls
-│   │   ├── LeadTriggerHandler.cls                 # Trigger event router
-│   │   └── LeadTriggerHandler_Test.cls
-│   ├── customMetadata/
-│   │   ├── LeadTracker_Pipeline_Stage.LT_Open_Not_Contacted.md-meta.xml
-│   │   ├── LeadTracker_Pipeline_Stage.LT_Working_Contacted.md-meta.xml
-│   │   ├── LeadTracker_Pipeline_Stage.LT_Closed_Converted.md-meta.xml
-│   │   ├── LeadTracker_Pipeline_Stage.LT_Closed_Not_Converted.md-meta.xml
-│   │   └── LeadTracker_App_Config.Default.md-meta.xml
-│   ├── flexipages/
-│   │   └── Lead_Tracker_Home.flexipage-meta.xml
-│   ├── labels/
-│   │   └── CustomLabels.labels-meta.xml           # All UI string labels
-│   ├── lwc/
-│   │   ├── ltBase/                                # Shared utility module
-│   │   ├── ltAppHeader/                           # App branding header
-│   │   ├── ltPipelineBoard/                       # Main kanban board
-│   │   └── ltLeadCard/                            # Individual lead card
-│   ├── objects/
-│   │   ├── LeadTracker_Pipeline_Stage__mdt/       # CMT object + field definitions
-│   │   └── LeadTracker_App_Config__mdt/           # CMT object + field definitions
-│   ├── permissionsets/
-│   │   └── Lead_Tracker_User.permissionset-meta.xml
-│   ├── tabs/
-│   │   └── Lead_Tracker.tab-meta.xml
-│   └── triggers/
-│       └── LeadTrigger.trigger                    # Single trigger, all events
-├── config/
-│   └── project-scratch-def.json
-├── manifest/
-│   └── package.xml
-├── scripts/
-│   ├── apex/                                      # Anonymous Apex scripts
-│   └── soql/                                      # SOQL query reference scripts
-└── sfdx-project.json
-```
-
----
-
-## Deployment Guide
+## Quick Start
 
 ### Prerequisites
 
 - Salesforce CLI (`sf`) v2.x+
 - Node.js 18+
-- Authorized Salesforce Developer Edition org
+- An authorized Salesforce org
 
-### Deploy to Connected Org
+### Deploy
 
 ```bash
-# Verify org connection
+# Verify auth
 sf org display --target-org sf-dev-edition-partner-org
 
 # Deploy all metadata
@@ -162,154 +81,106 @@ sf project deploy start \
   --target-org sf-dev-edition-partner-org \
   --wait 15
 
-# Run all Apex tests with coverage
-sf apex run test \
-  --target-org sf-dev-edition-partner-org \
-  --code-coverage \
-  --result-format human \
-  --wait 15
-
-# Assign permission set to current user
+# Assign permission set
 sf org assign permset \
   --name Lead_Tracker_User \
   --target-org sf-dev-edition-partner-org
 
-# Open the org
+# Open org
 sf org open --target-org sf-dev-edition-partner-org
 ```
 
-### Working with Scratch Orgs
+See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for the full step-by-step guide.
+
+---
+
+## Custom Metadata Types
+
+### `Pipeline_Stage__mdt` — Pipeline board columns
+
+| Field | Type | Purpose |
+|-------|------|---------|
+| `Stage_Label__c` | Text | Display name for the column header |
+| `Stage_Key__c` | Text | Maps to `Lead.Current_Stage__c` picklist value |
+| `Sequence__c` | Number | Column left-to-right order |
+| `Color__c` | Text(7) | Accent color in `#RRGGBB` format |
+| `Icon_Name__c` | Text | SLDS icon name (e.g. `standard:lead`) |
+| `Is_Active__c` | Checkbox | Enables/disables this column |
+
+### `LeadTracker_App_Config__mdt` — App-wide config
+
+| Field | Type | Purpose |
+|-------|------|---------|
+| `App_Name__c` | Text | Application display name |
+| `Primary_Color__c` | Text(7) | Brand primary color |
+| `Support_Email__c` | Email | Support contact |
+
+### Adding a Stage
+
+Create a new CMT record — no code changes required:
 
 ```bash
-# Create scratch org (requires Dev Hub)
-sf org create scratch \
-  --definition-file config/project-scratch-def.json \
-  --alias lead-tracker-scratch \
-  --duration-days 30
-
-# Deploy, assign perm set, open
-sf project deploy start --source-dir force-app --target-org lead-tracker-scratch
-sf org assign permset --name Lead_Tracker_User --target-org lead-tracker-scratch
-sf org open --target-org lead-tracker-scratch
+# Via Salesforce Setup > Custom Metadata Types > Pipeline Stage > Manage Records
+# Or deploy a new .md-meta.xml file:
+sf project deploy start \
+  --metadata "CustomMetadata:Pipeline_Stage.LT_Your_Stage" \
+  --target-org sf-dev-edition-partner-org
 ```
 
 ---
 
-## Metadata Strategy
+## Project Structure
 
-### Deployment Order (for new orgs)
+```
+lead-tracker-sf/
+├── docs/
+│   ├── ARCHITECTURE.md          # Component map, data flow, extension points
+│   └── DEPLOYMENT.md            # Step-by-step deployment guide
+├── force-app/main/default/
+│   ├── applications/            # LeadTracker console app definition
+│   ├── classes/                 # Apex — Selector / Service / Controller / Handler
+│   ├── customMetadata/          # Pipeline stages + app config CMT records
+│   ├── lwc/                     # All Lightning Web Components (prefix: lt)
+│   ├── objects/                 # CMT type + field definitions, Lead fields, Lead_Audit__c
+│   ├── permissionsets/          # Lead_Tracker_User
+│   ├── tabs/                    # Lead_Tracker + Lead_Tracker_Dashboard tabs
+│   └── triggers/                # LeadTrigger (single trigger, handler-routed)
+├── manifest/package.xml
+├── sfdx-project.json
+└── jest.config.js
+```
 
-1. `CustomObject` — CMT type definitions
-2. `CustomMetadata` — CMT records (pipeline stages, app config)
-3. `CustomLabels`
-4. `ApexClass` — in dependency order: Exception → Selector → Service → Controller → Handler
-5. `ApexTrigger`
-6. `LightningComponentBundle`
-7. `CustomTab`
-8. `CustomApplication`
-9. `FlexiPage`
-10. `PermissionSet`
+---
 
-### Naming Conventions
+## Naming Conventions
 
 | Artifact | Convention | Example |
 |----------|-----------|---------|
-| Apex Classes | `LeadTracker<Layer>` | `LeadTrackerSelector` |
-| Trigger | `<Object>Trigger` | `LeadTrigger` |
-| Trigger Handler | `<Object>TriggerHandler` | `LeadTriggerHandler` |
-| Test Classes | `<ClassName>_Test` | `LeadTrackerSelector_Test` |
-| LWC Components | `lt<ComponentName>` | `ltPipelineBoard` |
-| CMT Types | `LeadTracker_<Name>__mdt` | `LeadTracker_Pipeline_Stage__mdt` |
-| CMT Records (Dev Name) | `LT_<Name>` | `LT_Open_Not_Contacted` |
-| Custom Labels | `LT_<Description>` | `LT_App_Title` |
+| Apex Classes | `Lead<Layer>` or `LeadTracker<Layer>` | `LeadTrackerSelector` |
+| Test Classes | `<ClassName>_Test` | `LeadSelector_Test` |
+| LWC Components | `lt<ComponentName>` (camelCase) | `ltLeadCard` |
+| CMT Types | `LeadTracker_<Name>__mdt` | `Pipeline_Stage__mdt` |
+| CMT Record Dev Names | `LT_<Name>` | `LT_Initial_Inquiry` |
 | Permission Sets | `Lead_Tracker_<Role>` | `Lead_Tracker_User` |
-
-### Adding a New Pipeline Stage
-
-Never hardcode stages. Add a Custom Metadata record:
-
-```xml
-<!-- force-app/main/default/customMetadata/LeadTracker_Pipeline_Stage.LT_Your_Stage.md-meta.xml -->
-<CustomMetadata>
-    <label>LT - Your Stage</label>
-    <values>
-        <field>Stage_Name__c</field>
-        <value>Your Lead Status Value</value>  <!-- must match Lead.Status picklist -->
-    </values>
-    <values>
-        <field>Sort_Order__c</field>
-        <value>5</value>
-    </values>
-    ...
-</CustomMetadata>
-```
+| Custom Objects | `Lead_<Name>__c` | `Lead_Audit__c` |
 
 ---
 
-## Phase Plan
-
-### Phase 1: Foundation (Current — Complete)
-- [x] SFDX project initialization with API v66.0
-- [x] Salesforce org authentication (`sf-dev-edition-partner-org`)
-- [x] Custom Metadata Type object definitions + field schema
-- [x] Custom Metadata Records (4 pipeline stages + app config)
-- [x] Service-layer Apex architecture (Selector / Service / Controller)
-- [x] Trigger framework — one trigger, handler-routed
-- [x] LWC component scaffold (ltBase, ltAppHeader, ltPipelineBoard, ltLeadCard)
-- [x] Console app definition
-- [x] Custom labels for all UI strings
-- [x] Permission set for Lead Tracker users
-- [x] Git repository with clean structure and `.gitignore`
-
-### Phase 2: Pipeline Board UI
-- [ ] Full kanban board rendering in `ltPipelineBoard`
-- [ ] Drag-and-drop lead movement between stages
-- [ ] Stage column headers with configurable colors/icons
-- [ ] Real-time stage count badges
-- [ ] Empty-state handling per column
-
-### Phase 3: Lead Management
-- [ ] Lead detail side panel (splitview console)
-- [ ] Inline edit for key lead fields
-- [ ] Activity timeline integration
-- [ ] Lead conversion flow trigger from board
-- [ ] Smart lead scoring/rating display
-
-### Phase 4: Analytics
-- [ ] Pipeline velocity metrics
-- [ ] Stage conversion rate cards
-- [ ] Configurable dashboard (`ltDashboard`)
-- [ ] CSV/Excel export
-
-### Phase 5: Advanced Features
-- [ ] Advanced filtering (owner, source, date, score)
-- [ ] Saved named views
-- [ ] Configurable lead card field sets
-- [ ] Quick email/activity log from board card
-- [ ] Mobile-responsive layout
-
-### Phase 6: Packaging
-- [ ] Second-Generation Package (2GP) setup
-- [ ] Namespace configuration
-- [ ] Version management pipeline
-- [ ] AppExchange security review prep
-
----
-
-## Development Commands
+## Development
 
 ```bash
 # Lint LWC
 npm run lint
 
-# Format all files
-npm run prettier
-
-# Run LWC Jest unit tests
+# LWC Jest unit tests
 npm run test:unit
 
-# Run Apex tests
-sf apex run test --target-org sf-dev-edition-partner-org --code-coverage --result-format human --wait 15
+# Apex tests with coverage
+sf apex run test \
+  --target-org sf-dev-edition-partner-org \
+  --code-coverage \
+  --result-format human \
+  --wait 15
 ```
 
 ---
@@ -319,7 +190,6 @@ sf apex run test --target-org sf-dev-edition-partner-org --code-coverage --resul
 | Property | Value |
 |----------|-------|
 | Alias | `sf-dev-edition-partner-org` |
-| Username | `spant.38bdf20c3c08@agentforce.com` |
 | Org Type | Developer Edition |
 | API Version | 66.0 |
 

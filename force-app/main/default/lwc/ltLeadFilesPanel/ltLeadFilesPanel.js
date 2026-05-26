@@ -1,5 +1,5 @@
 import { LightningElement, api, track } from 'lwc';
-import { formatDate } from 'c/ltBase';
+import { relativeTime } from 'c/ltBase';
 import getLeadFiles from '@salesforce/apex/LeadController.getLeadFiles';
 
 const EXT_CONFIG = {
@@ -59,7 +59,7 @@ export default class LtLeadFilesPanel extends LightningElement {
                     iconStyle:     `background-color: ${cfg.color}1A; color: ${cfg.color}`,
                     formattedSize: this._formatSize(doc.ContentSize),
                     ownerName:     doc.Owner?.Name || '',
-                    relativeTime:  this._relativeTime(doc.CreatedDate),
+                    relativeTime:  relativeTime(doc.CreatedDate),
                     downloadUrl:   `/sfc/servlet.shepherd/document/download/${doc.Id}`
                 };
             });
@@ -83,16 +83,4 @@ export default class LtLeadFilesPanel extends LightningElement {
         return `${(bytes / 1048576).toFixed(1)} MB`;
     }
 
-    _relativeTime(dateString) {
-        if (!dateString) return '';
-        const ms   = Date.now() - new Date(dateString).getTime();
-        const mins = Math.floor(ms / 60000);
-        if (mins < 1)  return 'just now';
-        if (mins < 60) return `${mins}m ago`;
-        const hrs = Math.floor(mins / 60);
-        if (hrs  < 24) return `${hrs}h ago`;
-        const days = Math.floor(hrs / 24);
-        if (days < 7)  return `${days}d ago`;
-        return formatDate(dateString);
-    }
 }

@@ -20,6 +20,28 @@ export default class LtLeadDrawer extends NavigationMixin(LightningElement) {
     @api leadId;
     @track activeTab = 'timeline';
 
+    _panelFocused = false;
+    _handleDocKeyDown = (event) => {
+        if (event.key === 'Escape') this.handleClose();
+    };
+
+    // ── Lifecycle ─────────────────────────────────────────────────────────────
+
+    connectedCallback() {
+        document.addEventListener('keydown', this._handleDocKeyDown);
+    }
+
+    disconnectedCallback() {
+        document.removeEventListener('keydown', this._handleDocKeyDown);
+    }
+
+    renderedCallback() {
+        if (!this._panelFocused) {
+            const closeBtn = this.template.querySelector('.ld-icon-btn');
+            if (closeBtn) { closeBtn.focus(); this._panelFocused = true; }
+        }
+    }
+
     // ── Computed ──────────────────────────────────────────────────────────────
 
     get leadName()    { return this.card && this.card.name    || ''; }
